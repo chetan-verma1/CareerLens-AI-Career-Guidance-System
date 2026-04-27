@@ -1,6 +1,6 @@
 # CareerLens: AI-Based Career Guidance and Skill Gap Analysis System
 
-CareerLens is a hybrid AI and machine-learning-based career guidance platform developed as an MCA final-year project. It analyzes user resumes, extracts skills, recommends suitable career roles, identifies missing skills, estimates salary ranges, and evaluates resume ATS compatibility.
+CareerLens is a hybrid AI and machine-learning-based career guidance platform developed project. It analyzes user resumes, extracts skills, recommends suitable career roles, identifies missing skills, estimates salary ranges, and evaluates resume ATS compatibility.
 
 The system is built using Python, Flask, Scikit-learn, rule-based NLP, TF-IDF vectorization, cosine similarity, fuzzy matching, and regression-based salary prediction.
 
