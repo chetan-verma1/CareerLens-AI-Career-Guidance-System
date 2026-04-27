@@ -272,12 +272,39 @@ def meta_options():
 @app.route("/career_model", methods=["POST"])
 def career_model_api():
     data = request.get_json() or {}
+
+    text = str(data.get("text", "")).strip()
+    skills = data.get("skills", [])
+    education = data.get("education", "")
+    experience = data.get("experience", data.get("experience_years", 0))
+    domain = str(data.get("domain", "")).strip()
+
+    if isinstance(skills, str):
+        skills = [s.strip() for s in skills.split(",") if s.strip()]
+
+    if not isinstance(skills, list):
+        skills = []
+
+    skills = [str(skill).strip() for skill in skills if str(skill).strip()]
+
+    if not text and not skills:
+        return jsonify({
+            "error": "Please enter resume text or at least one skill for career prediction."
+        }), 400
+
+    try:
+        experience = float(experience)
+        if experience < 0:
+            experience = 0
+    except (TypeError, ValueError):
+        experience = 0
+
     payload = {
-        "text": data.get("text", ""),
-        "skills": data.get("skills", []),
-        "education": [data.get("education", "")] if isinstance(data.get("education", ""), str) else data.get("education", []),
-        "experience_years": data.get("experience", data.get("experience_years", 0)),
-        "domain": data.get("domain", ""),
+        "text": text,
+        "skills": skills,
+        "education": [education] if isinstance(education, str) and education.strip() else education,
+        "experience_years": experience,
+        "domain": domain,
     }
 
     bundle = predict_career(payload, top_k=3, return_details=True)
@@ -285,11 +312,16 @@ def career_model_api():
     predictions = bundle.get("predictions", [])
     inferred_domain = bundle.get("inferred_domain", "")
 
+    if not top3:
+        return jsonify({
+            "error": "Unable to generate career recommendations from the provided input."
+        }), 400
+
     top_domains = []
     for item in predictions[:3]:
-        domain = str(item.get("domain") or "").strip()
-        if domain and domain not in top_domains:
-            top_domains.append(domain)
+        item_domain = str(item.get("domain") or "").strip()
+        if item_domain and item_domain not in top_domains:
+            top_domains.append(item_domain)
 
     return jsonify({
         "top3_roles": top3,
@@ -299,7 +331,6 @@ def career_model_api():
         "details": predictions,
     })
 
-
 # ==============================
 # SKILL GAP API
 # ==============================
@@ -307,17 +338,34 @@ def career_model_api():
 def career_skill_api():
     data = request.get_json() or {}
 
-    matched, missing, score = skill_gap_analysis(
-        data.get("skills", []),
-        data.get("career", "")
-    )
+    career = str(data.get("career", "")).strip()
+    skills = data.get("skills", [])
+
+    if isinstance(skills, str):
+        skills = [s.strip() for s in skills.split(",") if s.strip()]
+
+    if not isinstance(skills, list):
+        skills = []
+
+    skills = [str(skill).strip() for skill in skills if str(skill).strip()]
+
+    if not career:
+        return jsonify({
+            "error": "Please select or enter a target career."
+        }), 400
+
+    if not skills:
+        return jsonify({
+            "error": "Please enter at least one skill for skill gap analysis."
+        }), 400
+
+    matched, missing, score = skill_gap_analysis(skills, career)
 
     return jsonify({
         "matched_skills": matched,
         "missing_skills": missing,
         "readiness_score": score
     })
-
 
 # ==============================
 # SALARY API
@@ -326,14 +374,35 @@ def career_skill_api():
 def salary_api():
     data = request.get_json() or {}
 
-    role = data.get("role", "").strip()
-    domain = data.get("domain", "").strip()
-    state = data.get("state", "").strip()
+    role = str(data.get("role", "")).strip()
+    domain = str(data.get("domain", "")).strip()
+    state = str(data.get("state", "")).strip()
+
+    if not role:
+        return jsonify({
+            "error": "Please select or enter a job role."
+        }), 400
+
+    if not domain:
+        return jsonify({
+            "error": "Please select a domain."
+        }), 400
+
+    if not state:
+        return jsonify({
+            "error": "Please select a state."
+        }), 400
 
     try:
-        exp = int(float(data.get("experience", 0)))
+        exp = float(data.get("experience", 0))
+        if exp < 0:
+            return jsonify({
+                "error": "Experience cannot be negative."
+            }), 400
     except (TypeError, ValueError):
-        exp = 0
+        return jsonify({
+            "error": "Experience must be a valid number."
+        }), 400
 
     salary_result = predict_salary(
         role=role,
@@ -345,7 +414,6 @@ def salary_api():
     return jsonify({
         "salary_details": salary_result
     })
-
 
 # ==============================
 # ATS RESUME CHECK API

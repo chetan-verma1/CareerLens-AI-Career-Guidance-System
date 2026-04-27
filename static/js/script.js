@@ -629,8 +629,8 @@ function predictCareer() {
   const education = document.getElementById("careerEducationLevel")?.value || "";
   const experience = document.getElementById("careerExperienceInput")?.value || "0";
 
-  if (!selectedCareerSignals.length && !education) {
-    careerResult.innerHTML = "<p style='color:#f59e0b;'>Please add skills/Interests or Select Education Level.</p>";
+  if (!selectedCareerSignals.length ) {
+    careerResult.innerHTML = "<p style='color:#f59e0b;'>Please add at least one skill or interest before predicting career.</p>";
     return;
   }
 
