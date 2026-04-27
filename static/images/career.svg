@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Career Predictor icon">
+  <defs>
+    <linearGradient id="bgDoc" x1="108" y1="68" x2="358" y2="396" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="0.5" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+    <linearGradient id="pathGrad" x1="214" y1="336" x2="424" y2="146" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="0.5" stop-color="#F97316"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+    <linearGradient id="starGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FDE047"/>
+      <stop offset="1" stop-color="#FB7185"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.35 0" result="glowColor"/>
+      <feBlend in="SourceGraphic" in2="glowColor" mode="screen"/>
+    </filter>
+    <style>
+      .floaty { animation: floaty 3s ease-in-out infinite; transform-origin: 50% 50%; }
+      .chartGlow { animation: chartGlow 1.9s ease-in-out infinite; }
+      .pathMove { animation: pathMove 2.1s ease-in-out infinite; }
+      .orb1 { animation: orbPulse 1.5s ease-in-out infinite; }
+      .orb2 { animation: orbPulse 1.5s ease-in-out infinite .22s; }
+      .orb3 { animation: orbPulse 1.5s ease-in-out infinite .44s; }
+      .star1 { animation: twinkle 1.2s ease-in-out infinite; }
+      .star2 { animation: twinkle 1.35s ease-in-out infinite .25s; }
+      .star3 { animation: twinkle 1.15s ease-in-out infinite .45s; }
+      .radar { animation: radarSpin 5s linear infinite; transform-origin: 356px 172px; }
+      .beam { animation: beamSweep 2s ease-in-out infinite; transform-origin: 356px 172px; }
+
+      @keyframes floaty {
+        0%,100% { transform: translateY(0px); }
+        50% { transform: translateY(-6px); }
+      }
+      @keyframes chartGlow {
+        0%,100% { opacity: .72; }
+        50% { opacity: 1; }
+      }
+      @keyframes pathMove {
+        0%,100% { stroke-dashoffset: 0; }
+        100% { stroke-dashoffset: -42; }
+      }
+      @keyframes orbPulse {
+        0%,100% { transform: scale(1); opacity: .85; }
+        50% { transform: scale(1.18); opacity: 1; }
+      }
+      @keyframes twinkle {
+        0%,100% { opacity: .55; transform: scale(1) rotate(0deg); }
+        50% { opacity: 1; transform: scale(1.2) rotate(12deg); }
+      }
+      @keyframes radarSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes beamSweep {
+        0%,100% { opacity: .18; transform: rotate(-22deg); }
+        50% { opacity: .45; transform: rotate(20deg); }
+      }
+    </style>
+  </defs>
+
+  <!-- Decorative stars -->
+  <g filter="url(#glow)">
+    <path class="star1" d="M112 102L118 116L132 122L118 128L112 142L106 128L92 122L106 116L112 102Z" fill="url(#starGrad)"/>
+    <path class="star2" d="M418 112L422 122L432 126L422 130L418 140L414 130L404 126L414 122L418 112Z" fill="#C4B5FD"/>
+    <path class="star3" d="M126 350L130 360L140 364L130 368L126 378L122 368L112 364L122 360L126 350Z" fill="#67E8F9"/>
+  </g>
+
+  <!-- Document / base -->
+  <g class="floaty" filter="url(#glow)">
+    <path d="M116 84C116 68.536 128.536 56 144 56H279.5C286.926 56 294.048 58.948 299.302 64.201L355.799 120.698C361.052 125.952 364 133.074 364 140.5V360C364 375.464 351.464 388 336 388H144C128.536 388 116 375.464 116 360V84Z"
+          fill="#0F172A" fill-opacity=".9" stroke="url(#bgDoc)" stroke-width="4"/>
+    <path d="M280 56V116C280 129.255 290.745 140 304 140H364" fill="none" stroke="url(#bgDoc)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- title lines -->
+    <rect x="150" y="118" width="112" height="12" rx="6" fill="#E2E8F0" fill-opacity=".95"/>
+    <rect x="150" y="146" width="148" height="10" rx="5" fill="#CBD5E1" fill-opacity=".75"/>
+
+    <!-- chart card -->
+    <rect x="146" y="198" width="156" height="116" rx="22" fill="#111827" fill-opacity=".9" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="170" y1="286" x2="278" y2="286" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+    <line x1="170" y1="224" x2="170" y2="286" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+    <path class="chartGlow" d="M176 274C194 262 203 250 216 254C228 258 236 228 252 224C260 222 268 226 276 214"
+          stroke="url(#bgDoc)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle class="orb1" cx="216" cy="254" r="7" fill="#22D3EE"/>
+    <circle class="orb2" cx="252" cy="224" r="7" fill="#A78BFA"/>
+    <circle class="orb3" cx="276" cy="214" r="7" fill="#34D399"/>
+  </g>
+
+  <!-- Prediction path / roadmap -->
+  <g filter="url(#glow)">
+    <path class="pathMove" d="M232 334C270 320 296 304 318 278C336 256 352 228 376 210C394 196 410 186 426 170"
+          stroke="url(#pathGrad)" stroke-width="10" stroke-linecap="round" fill="none"
+          stroke-dasharray="10 12"/>
+    <path d="M404 146L438 170L396 176" fill="none" stroke="url(#pathGrad)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Future target / radar -->
+  <g filter="url(#glow)">
+    <circle cx="356" cy="172" r="58" fill="url(#pathGrad)" fill-opacity=".10"/>
+    <circle cx="356" cy="172" r="48" fill="none" stroke="url(#pathGrad)" stroke-width="5"/>
+    <circle cx="356" cy="172" r="30" fill="none" stroke="#FDBA74" stroke-opacity=".7" stroke-width="3"/>
+    <circle cx="356" cy="172" r="12" fill="#FFF7ED" fill-opacity=".9"/>
+    <path class="beam" d="M356 172L395 146A48 48 0 0 1 399 203Z" fill="url(#pathGrad)" fill-opacity=".22"/>
+    <circle class="radar" cx="356" cy="172" r="48" fill="none" stroke="url(#pathGrad)" stroke-width="3" stroke-dasharray="8 12"/>
+  </g>
+
+  <!-- upward milestone dots -->
+  <g filter="url(#glow)">
+    <circle class="orb1" cx="288" cy="300" r="8" fill="#FDE047"/>
+    <circle class="orb2" cx="330" cy="256" r="8" fill="#FB7185"/>
+    <circle class="orb3" cx="374" cy="212" r="8" fill="#C4B5FD"/>
+  </g>
+</svg>

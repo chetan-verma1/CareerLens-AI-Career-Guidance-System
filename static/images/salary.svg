@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Salary Predictor icon">
+  <defs>
+    <linearGradient id="cardGrad" x1="96" y1="80" x2="336" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="0.45" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+    <linearGradient id="moneyGrad" x1="290" y1="150" x2="430" y2="330" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FDE68A"/>
+      <stop offset="0.45" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+    <linearGradient id="trendGrad" x1="150" y1="300" x2="292" y2="190" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.35 0" result="glowColor"/>
+      <feBlend in="SourceGraphic" in2="glowColor" mode="screen"/>
+    </filter>
+    <style>
+      .floaty { animation: floaty 2.8s ease-in-out infinite; transform-origin: 50% 50%; }
+      .bar1 { animation: rise1 1.8s ease-in-out infinite; transform-origin: center bottom; }
+      .bar2 { animation: rise2 1.8s ease-in-out infinite .12s; transform-origin: center bottom; }
+      .bar3 { animation: rise3 1.8s ease-in-out infinite .24s; transform-origin: center bottom; }
+      .trend { stroke-dasharray: 8 10; animation: dashMove 1.6s linear infinite; }
+      .coin1 { animation: coinFloat 1.9s ease-in-out infinite; transform-origin: center; }
+      .coin2 { animation: coinFloat 1.9s ease-in-out infinite .18s; transform-origin: center; }
+      .coin3 { animation: coinFloat 1.9s ease-in-out infinite .36s; transform-origin: center; }
+      .rupeePulse { animation: rupeePulse 1.5s ease-in-out infinite; transform-origin: 366px 224px; }
+      .ringSpin { animation: ringSpin 6s linear infinite; transform-origin: 366px 224px; }
+      .spark1 { animation: twinkle 1.2s ease-in-out infinite; }
+      .spark2 { animation: twinkle 1.35s ease-in-out infinite .2s; }
+      .spark3 { animation: twinkle 1.15s ease-in-out infinite .45s; }
+
+      @keyframes floaty {
+        0%,100% { transform: translateY(0px); }
+        50% { transform: translateY(-6px); }
+      }
+      @keyframes rise1 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.18); }
+      }
+      @keyframes rise2 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(0.85); }
+      }
+      @keyframes rise3 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.24); }
+      }
+      @keyframes dashMove {
+        to { stroke-dashoffset: -36; }
+      }
+      @keyframes coinFloat {
+        0%,100% { transform: translateY(0px) scale(1); opacity: .92; }
+        50% { transform: translateY(-7px) scale(1.08); opacity: 1; }
+      }
+      @keyframes rupeePulse {
+        0%,100% { transform: scale(1); opacity: .9; }
+        50% { transform: scale(1.08); opacity: 1; }
+      }
+      @keyframes ringSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes twinkle {
+        0%,100% { opacity: .55; transform: scale(1) rotate(0deg); }
+        50% { opacity: 1; transform: scale(1.2) rotate(10deg); }
+      }
+    </style>
+  </defs>
+
+  <!-- decorative sparks -->
+  <g filter="url(#glow)">
+    <path class="spark1" d="M108 100L114 114L128 120L114 126L108 140L102 126L88 120L102 114L108 100Z" fill="#FDE047"/>
+    <path class="spark2" d="M422 112L426 122L436 126L426 130L422 140L418 130L408 126L418 122L422 112Z" fill="#C4B5FD"/>
+    <path class="spark3" d="M118 360L122 370L132 374L122 378L118 388L114 378L104 374L114 370L118 360Z" fill="#67E8F9"/>
+  </g>
+
+  <!-- card -->
+  <g class="floaty" filter="url(#glow)">
+    <rect x="96" y="80" width="240" height="320" rx="28" fill="#0F172A" fill-opacity=".92" stroke="url(#cardGrad)" stroke-width="4"/>
+
+    <rect x="126" y="112" width="96" height="12" rx="6" fill="#E2E8F0" fill-opacity=".95"/>
+    <rect x="126" y="136" width="132" height="10" rx="5" fill="#CBD5E1" fill-opacity=".72"/>
+
+    <rect x="122" y="184" width="188" height="156" rx="24" fill="#111827" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="146" y1="308" x2="286" y2="308" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+    <line x1="146" y1="214" x2="146" y2="308" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+
+    <rect class="bar1" x="168" y="260" width="22" height="48" rx="10" fill="#22D3EE"/>
+    <rect class="bar2" x="206" y="234" width="22" height="74" rx="10" fill="#A78BFA"/>
+    <rect class="bar3" x="244" y="206" width="22" height="102" rx="10" fill="#34D399"/>
+
+    <path class="trend" d="M154 292C176 280 194 264 212 252C228 242 246 228 270 210C276 206 282 200 288 194"
+          stroke="url(#trendGrad)" stroke-width="6" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- rupee / currency focus -->
+  <g filter="url(#glow)">
+    <circle cx="366" cy="224" r="68" fill="url(#moneyGrad)" fill-opacity=".12"/>
+    <circle cx="366" cy="224" r="56" fill="none" stroke="url(#moneyGrad)" stroke-width="10"/>
+    <circle class="ringSpin" cx="366" cy="224" r="44" fill="none" stroke="url(#moneyGrad)" stroke-width="3" stroke-dasharray="8 12"/>
+
+    <!-- rupee symbol -->
+    <g class="rupeePulse">
+      <circle cx="366" cy="224" r="24" fill="#FFF7ED" fill-opacity=".95"/>
+      <path d="M351 208H382" stroke="#F59E0B" stroke-width="5" stroke-linecap="round"/>
+      <path d="M351 218H382" stroke="#F59E0B" stroke-width="5" stroke-linecap="round"/>
+      <path d="M355 208C368 208 373 212 373 220C373 229 366 234 355 234H351" stroke="#F59E0B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M351 234L380 258" stroke="#F59E0B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <rect x="400" y="274" width="24" height="86" rx="12" transform="rotate(-42 400 274)" fill="url(#moneyGrad)"/>
+  </g>
+
+  <!-- currency coins -->
+  <g filter="url(#glow)">
+    <circle class="coin1" cx="316" cy="330" r="13" fill="url(#moneyGrad)"/>
+    <circle class="coin2" cx="356" cy="302" r="13" fill="url(#moneyGrad)"/>
+    <circle class="coin3" cx="400" cy="276" r="13" fill="url(#moneyGrad)"/>
+    <path d="M316 330L356 302L400 276" stroke="url(#cardGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".82"/>
+    <text x="311" y="335" font-size="15" font-weight="700" fill="#FFF7ED" font-family="Arial, Helvetica, sans-serif">₹</text>
+    <text x="351" y="307" font-size="15" font-weight="700" fill="#FFF7ED" font-family="Arial, Helvetica, sans-serif">₹</text>
+    <text x="395" y="281" font-size="15" font-weight="700" fill="#FFF7ED" font-family="Arial, Helvetica, sans-serif">₹</text>
+  </g>
+</svg>

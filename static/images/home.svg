@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Animated home technology logo">
+  <defs>
+    <linearGradient id="roofGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0ea5e9">
+        <animate attributeName="stop-color" values="#0ea5e9;#2563eb;#0ea5e9" dur="4s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#22c55e">
+        <animate attributeName="stop-color" values="#22c55e;#84cc16;#22c55e" dur="4s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+
+    <linearGradient id="trailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#38bdf8" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#84cc16" stop-opacity="0.9"/>
+    </linearGradient>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="pulseGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 1 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Transparent background -->
+  <g transform="translate(18 12)">
+    <!-- swoosh -->
+    <path d="M92 355c40 22 137 28 243 4 42-9 72-21 93-32-17 24-48 44-90 58-111 35-232 28-289-18-13-10-20-21-23-32 9 8 21 14 34 20z"
+          fill="url(#trailGrad)" filter="url(#softGlow)">
+      <animateTransform attributeName="transform" type="translate" values="0 0; 4 -2; 0 0" dur="3s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- house body -->
+    <path d="M151 241 L238 170 L325 241 V350 H151 Z"
+          fill="#0f172a" opacity="0.95"/>
+    <path d="M145 248 L238 173 L331 248"
+          fill="none" stroke="url(#roofGrad)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" filter="url(#pulseGlow)">
+      <animate attributeName="stroke-dasharray" values="0 400;400 0;0 400" dur="5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M318 184 V248"
+          fill="none" stroke="url(#roofGrad)" stroke-width="16" stroke-linecap="round" filter="url(#pulseGlow)">
+      <animate attributeName="opacity" values="0.85;1;0.85" dur="2.5s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- door -->
+    <rect x="184" y="282" width="42" height="68" rx="6" fill="#1e293b"/>
+    <!-- windows -->
+    <rect x="246" y="262" width="28" height="28" rx="3" fill="#38bdf8" opacity="0.9">
+      <animate attributeName="opacity" values="0.55;1;0.55" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="280" y="262" width="28" height="28" rx="3" fill="#38bdf8" opacity="0.9">
+      <animate attributeName="opacity" values="1;0.55;1" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="246" y="296" width="28" height="28" rx="3" fill="#38bdf8" opacity="0.9">
+      <animate attributeName="opacity" values="1;0.55;1" dur="2.2s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="280" y="296" width="28" height="28" rx="3" fill="#38bdf8" opacity="0.9">
+      <animate attributeName="opacity" values="0.55;1;0.55" dur="2.2s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- tech circuits -->
+    <g fill="none" stroke="url(#roofGrad)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" filter="url(#pulseGlow)">
+      <path d="M322 226 H381 L428 181">
+        <animate attributeName="stroke-dasharray" values="0 180;180 0;0 180" dur="2.4s" repeatCount="indefinite"/>
+      </path>
+      <path d="M332 252 H392 L445 210">
+        <animate attributeName="stroke-dasharray" values="0 180;180 0;0 180" dur="2.8s" repeatCount="indefinite"/>
+      </path>
+      <path d="M340 278 H399 L437 246">
+        <animate attributeName="stroke-dasharray" values="0 160;160 0;0 160" dur="2.1s" repeatCount="indefinite"/>
+      </path>
+    </g>
+
+    <!-- nodes -->
+    <g filter="url(#pulseGlow)">
+      <circle cx="428" cy="181" r="11" fill="#22c55e">
+        <animate attributeName="r" values="10;13;10" dur="1.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="445" cy="210" r="10" fill="#84cc16">
+        <animate attributeName="r" values="9;12;9" dur="2.1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="437" cy="246" r="10" fill="#38bdf8">
+        <animate attributeName="r" values="9;12;9" dur="1.9s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- light sweep -->
+    <circle cx="-40" cy="0" r="8" fill="#ffffff" opacity="0.9" filter="url(#softGlow)">
+      <animateMotion dur="3.5s" repeatCount="indefinite"
+        path="M90 352 C160 384, 290 382, 402 332"/>
+      <animate attributeName="opacity" values="0;1;0" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

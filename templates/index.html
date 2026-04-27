@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CareerLens AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="app-mode">
+
+  {% if result %}
+    <div id="toast" class="toast">Resume Uploaded Successfully!</div>
+  {% endif %}
+
+  {% if error %}
+    <div class="error-box global-error">
+      ⚠️ {{ error }}
+    </div>
+  {% endif %}
+
+  <div id="appShell" class="app-shell">
+    <div class="header">
+      <div class="header-brand-center refined-header-brand">
+        <div class="header-logo-shell">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CareerLens" class="header-center-logo refined-logo">
+        </div>
+
+        <div class="header-center-text refined-header-text">
+          <h1>CareerLens</h1>
+          <span>AI Powered Career Recommendation System</span>
+        </div>
+      </div>
+
+      <a href="/" class="back-home-btn">Back to Home</a>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-brand-card">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CareerLens" class="sidebar-brand-logo">
+        <div class="sidebar-brand-text">
+          <h2>CareerLens</h2>
+          <p>AI Career Suite</p>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <div class="nav-item active" onclick="showSection(event,'upload')">
+          <span class="nav-icon-box">
+            <img src="{{ url_for('static', filename='images/smart.svg') }}" alt="Smart Analyzer">
+          </span>
+          <span class="nav-label">Smart Analyzer</span>
+        </div>
+
+        <div class="nav-item" onclick="showSection(event,'resumeTool')">
+          <span class="nav-icon-box">
+            <img src="{{ url_for('static', filename='images/resume.svg') }}" alt="Resume Extractor">
+          </span>
+          <span class="nav-label">Resume Extractor</span>
+        </div>
+
+        <div class="nav-item" onclick="showSection(event,'careerTool')">
+          <span class="nav-icon-box">
+            <img src="{{ url_for('static', filename='images/career.svg') }}" alt="Career Predictor">
+          </span>
+          <span class="nav-label">Career Predictor</span>
+        </div>
+
+        <div class="nav-item" onclick="showSection(event,'skillTool')">
+          <span class="nav-icon-box">
+            <img src="{{ url_for('static', filename='images/skill.svg') }}" alt="Skill Gap Analyzer">
+          </span>
+          <span class="nav-label">Skill Gap Analyzer</span>
+        </div>
+
+        <div class="nav-item" onclick="showSection(event,'salaryTool')">
+          <span class="nav-icon-box">
+            <img src="{{ url_for('static', filename='images/salary.svg') }}" alt="Salary Predictor">
+          </span>
+          <span class="nav-label">Salary Predictor</span>
+        </div>
+
+        <div class="nav-item" onclick="showSection(event,'atsTool')">
+          <span class="nav-icon-box">
+            <img src="{{ url_for('static', filename='images/ats.svg') }}" alt="ATS Checker">
+          </span>
+          <span class="nav-label">ATS Checker</span>
+        </div>
+
+        <div class="nav-item" onclick="showSection(event,'reportTool')">
+          <span class="nav-icon-box">
+            <img src="{{ url_for('static', filename='images/report.svg') }}" alt="Download Report">
+          </span>
+          <span class="nav-label">Download Report</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+
+      <!-- SMART ANALYZER -->
+      <div id="upload" class="section active-section">
+        <div class="container glass-card smart-upload-card reveal-card">
+          <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CareerLens Logo">
+          </div>
+
+          <h3>Smart Analyzer</h3>
+          <p class="subtitle">Analyze . Optimize . Get hired</p>
+
+          <form method="POST" enctype="multipart/form-data" id="uploadForm" class="tool-form">
+            <input type="hidden" name="tool_type" value="smart_analyzer">
+
+            <div class="upload-dropzone centered-upload">
+              <p class="upload-hint">Upload your resume to unlock AI-powered career insights</p>
+              <input id="smartResume" type="file" name="resume" accept=".pdf,.docx" required>
+            </div>
+
+            <div class="tool-action-row center-actions">
+              <button type="submit" class="primary-action-btn">Analyze Resume</button>
+              <button type="button" class="secondary-action-btn" onclick="resetSmartAnalyzerForm()">Reset</button>
+            </div>
+          </form>
+
+          {% if result %}
+            <p class="success-inline">✔ Resume analyzed successfully</p>
+
+            <div class="dashboard-inline" id="smartAnalyzerReport">
+              <div class="tool-panel dashboard-shell glass-card fade-in reveal-card">
+                <div class="dashboard-heading subtle-dashboard-heading" style="display:none;"></div>
+
+                <div class="dashboard-summary-row">
+                  <div class="dashboard-hero-card centered-hero-card">
+                    <div class="dashboard-hero-text centered-hero-text">
+                      <h3 class="dashboard-profile-name accent-profile-name">
+                        {{ result["name"].title() if result.get("name") else "Candidate" }}
+                      </h3>
+
+                      <p class="dashboard-profile-role">
+                        Best Match:
+                        <strong>{{ result["best_career"].replace('_', ' ').title() if result.get("best_career") else "Not Available" }}</strong>
+                      </p>
+
+                      <p class="dashboard-profile-desc">
+                        Your resume aligns most with the
+                        <strong>{{ result["predicted_domain"] }}</strong>
+                        domain and shows the strongest match for
+                        <strong>{{ result["best_career"].replace('_', ' ').title() if result.get("best_career") else "Not Available" }}</strong>.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="dashboard-quick-stats">
+                    <div class="dashboard-stat-card">
+                      <span>Experience</span>
+                      <h3>
+                        {{ (result["resume_data"]["Experience (Years)"] | float | round(0) | int) if result.get("resume_data") and result["resume_data"].get("Experience (Years)") is not none else 0 }} Years
+                      </h3>
+                      <p>Estimated from the uploaded resume timeline and explicit experience mentions.</p>
+                    </div>
+
+                    <div class="dashboard-stat-card">
+                      <span>Education</span>
+                      <h3>
+                        {% if result.get("resume_data") and result["resume_data"].get("Education") %}
+                          {{ result["resume_data"]["Education"][0] }}
+                        {% else %}
+                          Not detected
+                        {% endif %}
+                      </h3>
+                      <p>
+                        {% if result.get("resume_data") and result["resume_data"].get("Education") %}
+                          {{ result["resume_data"]["Education"]|length }} education item(s) detected.
+                        {% else %}
+                          Add clearer degree and institution lines to improve extraction.
+                        {% endif %}
+                      </p>
+                    </div>
+
+                    <div class="dashboard-stat-card">
+                      <span>Skills Captured</span>
+                      <h3>{{ result["resume_data"]["Skills"]|length if result.get("resume_data") else 0 }}</h3>
+                      <p>Skills are extracted from dedicated skill, project, and experience sections.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="dashboard-main-grid">
+                  <div class="dashboard-left">
+                    <div class="dashboard-block">
+                      <h3>Top Role Comparison</h3>
+                      <div class="chart-wrap">
+                        <canvas id="careerChart"
+                          data-labels='{{ result["labels"] | tojson }}'
+                          data-values='{{ result["values"] | tojson }}'>
+                        </canvas>
+                      </div>
+
+                      <div class="career-list role-comparison-list">
+                        {% for career, score in result["top3"] %}
+                        <div class="career-card"
+                            onclick="switchCareer('{{ career.lower() }}')"
+                            id="card-{{ career.lower() }}">
+                          <span>{{ career.replace('_', ' ').title() }}</span>
+                          <span>{{ score }}%</span>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                    <div class="dashboard-block">
+                      <div class="dashboard-suggestions-box">
+                        <h4>Suggestions</h4>
+                        <ul class="suggestions compact-list">
+                          {% for s in result["suggestions"][:6] %}
+                            <li>{{ s }}</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="dashboard-right">
+                    <div class="dashboard-block">
+                      <h3>Selected Role Detail</h3>
+
+                      <div class="dashboard-mini-stats stats-3">
+                        <div class="mini-stat-box">
+                          <span>Predicted Domain</span>
+                          <strong id="domainBox">{{ result["predicted_domain"] }}</strong>
+                        </div>
+
+                        <div class="mini-stat-box">
+                          <span>ATS Score</span>
+                          <strong>{{ result["general_ats"] }}%</strong>
+                        </div>
+
+                        <div class="mini-stat-box">
+                          <span>Salary Estimate</span>
+                          <strong id="salaryBox">
+                            {% if result.get("salary_details") and result["salary_details"].get("display_text") %}
+                              {{ result["salary_details"]["display_text"] }}
+                            {% else %}
+                              Salary estimate unavailable
+                            {% endif %}
+                          </strong>
+                        </div>
+                      </div>
+
+                      <div class="dashboard-skill-grid">
+                        <div class="dashboard-skill-box">
+                          <h4>Matched Skills</h4>
+                          <div id="matchedSkills" class="skill-container"></div>
+                        </div>
+
+                        <div class="dashboard-skill-box">
+                          <h4>Missing Skills</h4>
+                          <div id="missingSkills" class="skill-container"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="dashboard-block">
+                      <h3>ATS Verdict</h3>
+                      <div class="dashboard-verdict-box">
+                        <p id="verdictBox">
+                          {% if result.get("ats_verdict") %}
+                            {{ result["ats_verdict"] }}
+                          {% else %}
+                            {{ result["verdict"] }}
+                          {% endif %}
+                        </p>
+                      </div>
+
+                      {% if result.get("ats_breakdown") %}
+                      <div class="dashboard-mini-stats stats-4 ats-subscore-grid">
+                        <div class="mini-stat-box"><span>Structure</span><strong>{{ result["ats_breakdown"]["structure"] }}%</strong></div>
+                        <div class="mini-stat-box"><span>Keywords</span><strong>{{ result["ats_breakdown"]["keyword_strength"] }}%</strong></div>
+                        <div class="mini-stat-box"><span>Skills</span><strong>{{ result["ats_breakdown"]["skills_depth"] }}%</strong></div>
+                        <div class="mini-stat-box"><span>Impact</span><strong>{{ result["ats_breakdown"]["impact"] }}%</strong></div>
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+
+                <script id="careerData" type="application/json">
+                  {{ result["career_data"] | tojson }}
+                </script>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- RESUME EXTRACTOR -->
+      <div id="resumeTool" class="section">
+        <div class="tool-panel glass-card fade-in reveal-card">
+          <div class="tool-logo-wrap">
+            <img src="{{ url_for('static', filename='images/resume-tool.png') }}" alt="Resume Extractor" class="tool-logo">
+          </div>
+
+          <h2>Resume Extractor</h2>
+          <p class="subtitle">Upload . Extract . Organize</p>
+
+          <form method="POST" enctype="multipart/form-data" id="resumeExtractorForm" class="tool-form">
+            <input type="hidden" name="tool_type" value="resume_analyzer">
+
+            <div class="upload-dropzone compact-dropzone centered-upload">
+              <p class="upload-hint">Choose resume and parse structured profile details instantly</p>
+              <input id="resumeExtractorFile" type="file" name="resume" accept=".pdf,.docx" required>
+            </div>
+
+            <div class="tool-action-row center-actions">
+              <button type="submit" class="primary-action-btn">Extract Resume Data</button>
+              <button type="button" class="secondary-action-btn" onclick="resetResumeExtractorForm()">Reset</button>
+            </div>
+          </form>
+
+          {% if resume_result %}
+            <p class="success-inline">✔ Resume details extracted successfully</p>
+
+            <div class="results glass-card fade-in info-stack-card">
+              <div class="info-grid-two">
+                <div class="mini-info-card">
+                  <h3>Candidate Name</h3>
+                  <p>{{ resume_result["Name"] }}</p>
+                </div>
+                <div class="mini-info-card">
+                  <h3>Experience</h3>
+                  <p>{{ resume_result["Experience (Years)"] | float | round(0) | int }} Years</p>
+                </div>
+              </div>
+
+              <h3>Education</h3>
+              <div class="skill-container">
+                {% for edu in resume_result["Education"] %}
+                  <div class="skill-box matched">{{ edu.title() }}</div>
+                {% endfor %}
+              </div>
+
+              <h3>Skills</h3>
+              <div class="skill-container">
+                {% for skill in resume_result["Skills"] %}
+                  <div class="skill-box matched">{{ skill.title() }}</div>
+                {% endfor %}
+              </div>
+
+              <h3>Raw Text Preview</h3>
+              <div class="raw-preview">{{ resume_result["Raw_Text"][:1200] }}</div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- CAREER PREDICTOR -->
+      <div id="careerTool" class="section">
+        <div class="tool-panel glass-card fade-in reveal-card">
+          <div class="tool-logo-wrap">
+            <img src="{{ url_for('static', filename='images/career-tool.png') }}" alt="Career Predictor" class="tool-logo">
+          </div>
+
+          <h2>Career Predictor</h2>
+          <p class="subtitle">Build your profile with interactive inputs and predict the best-fit career path</p>
+
+          <div class="interactive-form-grid">
+            <div class="field-card wide-field">
+              <label for="careerSkillSearchInput" class="field-label">Add Skills / Interests / Keywords</label>
+              <input
+                type="text"
+                id="careerSkillSearchInput"
+                class="interactive-text"
+                placeholder="Type python, teaching, research, tableau, machine learning..."
+                autocomplete="off"
+              >
+              <div id="careerSkillSuggestions" class="skill-suggestion-box"></div>
+            </div>
+
+            <div class="field-card">
+              <label for="careerEducationLevel" class="field-label">Education Level</label>
+              <select id="careerEducationLevel" class="pretty-select">
+                <option value="">Select education level</option>
+                <option value="10th">10th</option>
+                <option value="12th">12th</option>
+                <option value="Diploma">Diploma</option>
+                <option value="Bachelor">Bachelor</option>
+                <option value="Master">Master</option>
+                <option value="Ph.D">Ph.D</option>
+              </select>
+            </div>
+
+            <div class="field-card">
+              <label for="careerExperienceInput" class="field-label">Experience: <span id="careerExpValue">2</span> years</label>
+              <input type="range" id="careerExperienceInput" min="0" max="25" value="2" class="slider-range">
+              <div class="range-scale">
+                <span>0</span>
+                <span>5</span>
+                <span>10</span>
+                <span>15</span>
+                <span>20</span>
+                <span>25</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="selected-chip-panel">
+            <div class="selected-chip-header">
+              <span>Selected Career Signals</span>
+              <button type="button" class="chip-clear-btn" onclick="clearCareerSignals()">Clear All</button>
+            </div>
+            <div id="careerSelectedChips" class="selected-chip-wrap"></div>
+          </div>
+
+          <div class="tool-action-row center-actions">
+            <button type="button" onclick="predictCareer()" class="primary-action-btn">Predict Career</button>
+            <button type="button" class="secondary-action-btn" onclick="resetCareerTool()">Reset</button>
+          </div>
+
+          <div id="careerResult" class="tool-result-box"></div>
+        </div>
+      </div>
+
+      <!-- SKILL GAP ANALYZER -->
+      <div id="skillTool" class="section">
+        <div class="tool-panel glass-card fade-in reveal-card">
+          <div class="tool-logo-wrap">
+            <img src="{{ url_for('static', filename='images/skill-tool.png') }}" alt="Skill Gap Analyzer" class="tool-logo">
+          </div>
+
+          <h2>Skill Gap Analyzer</h2>
+          <p class="subtitle">Select a target role and build your current skill set interactively</p>
+
+          <div class="interactive-form-grid skill-gap-grid">
+            <div class="field-card">
+              <label for="targetCareer" class="field-label">Target Career</label>
+              <select id="targetCareer" class="pretty-select">
+                <option value="">Loading roles...</option>
+              </select>
+            </div>
+
+            <div class="field-card">
+              <label for="skillSearchInput" class="field-label">Add Your Skills / Interests</label>
+              <input
+                type="text"
+                id="skillSearchInput"
+                class="interactive-text"
+                placeholder="Type a skill like Python, SQL, Teaching, Tableau, Machine Learning"
+                autocomplete="off"
+              >
+              <div id="skillSuggestions" class="skill-suggestion-box"></div>
+            </div>
+          </div>
+
+          <div class="selected-chip-panel">
+            <div class="selected-chip-header">
+              <span>Selected Skills</span>
+              <button type="button" class="chip-clear-btn" onclick="clearSelectedSkills()">Clear All</button>
+            </div>
+            <div id="selectedSkillChips" class="selected-chip-wrap"></div>
+          </div>
+
+          <div class="tool-action-row center-actions">
+            <button type="button" onclick="analyzeSkills()" class="primary-action-btn">Analyze Skill Gap</button>
+            <button type="button" class="secondary-action-btn" onclick="resetSkillTool()">Reset</button>
+          </div>
+
+          <div id="skillResult" class="tool-result-box"></div>
+        </div>
+      </div>
+
+      <!-- SALARY PREDICTOR -->
+      <div id="salaryTool" class="section">
+        <div class="tool-panel glass-card fade-in reveal-card">
+          <div class="tool-logo-wrap">
+            <img src="{{ url_for('static', filename='images/salary-tool.png') }}" alt="Salary Predictor" class="tool-logo">
+          </div>
+
+          <h2>Salary Predictor</h2>
+          <p class="subtitle">Choose role, domain, state, and experience for an India-focused salary estimate</p>
+
+          <div class="interactive-form-grid salary-grid">
+            <div class="field-card">
+              <label for="roleInput" class="field-label">Role</label>
+              <select id="roleInput" class="pretty-select">
+                <option value="">Loading roles...</option>
+              </select>
+            </div>
+
+            <div class="field-card">
+              <label for="salaryDomain" class="field-label">Domain</label>
+              <select id="salaryDomain" class="pretty-select">
+                <option value="">Loading domains...</option>
+              </select>
+            </div>
+
+            <div class="field-card">
+              <label for="stateSelect" class="field-label">State / UT</label>
+              <select id="stateSelect" class="pretty-select">
+                <option value="">Loading states...</option>
+              </select>
+            </div>
+
+            <div class="field-card wide-field">
+              <label for="expInput" class="field-label">Experience: <span id="expValue">3</span> years</label>
+              <input type="range" id="expInput" min="0" max="25" value="3" class="slider-range">
+              <div class="range-scale">
+                <span>0</span>
+                <span>5</span>
+                <span>10</span>
+                <span>15</span>
+                <span>20</span>
+                <span>25</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-action-row center-actions">
+            <button type="button" onclick="predictSalary()" class="primary-action-btn">Predict Salary</button>
+            <button type="button" class="secondary-action-btn" onclick="resetSalaryTool()">Reset</button>
+          </div>
+
+          <div id="salaryOutput" class="salary-result-card tool-result-box"></div>
+        </div>
+      </div>
+
+      <!-- ATS CHECKER -->
+      <div id="atsTool" class="section">
+        <div class="tool-panel glass-card fade-in reveal-card">
+          <div class="tool-logo-wrap">
+            <img src="{{ url_for('static', filename='images/ats-tool.png') }}" alt="ATS Checker" class="tool-logo">
+          </div>
+
+          <h2>ATS Checker</h2>
+          <p class="subtitle">Upload a resume and compare it against a target role for ATS readiness</p>
+
+          <form id="atsForm" enctype="multipart/form-data" class="tool-form">
+            <div class="interactive-form-grid">
+              <div class="field-card">
+                <label for="atsResume" class="field-label">Upload Resume</label>
+                <input type="file" id="atsResume" name="resume" accept=".pdf,.doc,.docx" required>
+              </div>
+
+              <div class="field-card">
+                <label for="atsRole" class="field-label">Target Role</label>
+                <select id="atsRole" name="role" class="pretty-select">
+                  <option value="">Loading roles...</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="tool-action-row center-actions">
+              <button type="button" onclick="checkATS()" class="primary-action-btn">Check ATS</button>
+              <button type="button" class="secondary-action-btn" onclick="resetATSTool()">Reset</button>
+            </div>
+          </form>
+
+          <div class="ats-result-box stylish-result-box">
+            <h3 id="atsGeneralScore"></h3>
+            <p id="atsVerdict"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOWNLOAD REPORT TOOL -->
+      <div id="reportTool" class="section">
+        <div class="tool-panel glass-card fade-in reveal-card">
+          <div class="tool-logo-wrap">
+            <img src="{{ url_for('static', filename='images/report-main.svg') }}" alt="Download Report" class="tool-logo">
+          </div>
+
+          <h2>Download Smart Report</h2>
+          <p class="subtitle">Export your Smart Analyzer results</p>
+
+          <div class="tool-action-row center-actions">
+            <button type="button" class="primary-action-btn" onclick="downloadSmartReport()">Print / Save Smart Report</button>
+          </div>
+
+          <div class="tool-result-box report-info-box">
+            {% if result %}
+              <p>Only the Smart Analyzer report will be printed or saved as PDF.</p>
+              <div class="skill-container">
+                <div class="skill-box matched">Career Prediction</div>
+                <div class="skill-box matched">ATS Score</div>
+                <div class="skill-box matched">Salary Insights</div>
+                <div class="skill-box matched">Skill Gap Analysis</div>
+                <div class="skill-box matched">Suggestions</div>
+              </div>
+            {% else %}
+              <p>Run Smart Analyzer first, then open this tool to print the report only.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <h3>CareerLens</h3>
+        <p>AI-driven career guidance, resume intelligence, ATS analysis and skill mapping.</p>
+      </div>
+
+      <div class="footer-middle">
+        <span>Smart Analyzer</span>
+        <span>Resume Analyzer</span>
+        <span>ATS + Career Tools</span>
+      </div>
+
+      <div class="footer-right">
+        <span>Python</span>
+        <span>Flask</span>
+        <span>Machine Learning + NLP</span>
+      </div>
+    </div>
+
+    <div class="footer-bottom-line">
+      © 2026 CareerLens all rights reserved | Developed by Chetan Verma
+    </div>
+  </footer>
+
+  <script>
+    window.activeSectionFromServer = "{{ active_section|default('upload') }}";
+  </script>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Download Report Manual icon">
+  <defs>
+    <linearGradient id="docGrad" x1="34" y1="22" x2="182" y2="226" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="0.5" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+    <linearGradient id="dlGrad" x1="144" y1="120" x2="232" y2="212" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FDE047"/>
+      <stop offset="0.55" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="chartGrad" x1="58" y1="142" x2="132" y2="186" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="0.5" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.28 0" result="glowColor"/>
+      <feBlend in="SourceGraphic" in2="glowColor" mode="screen"/>
+    </filter>
+    <style>
+      .floaty { animation: floaty 2.8s ease-in-out infinite; transform-origin: 50% 50%; }
+      .arrowDrop { animation: arrowDrop 1.7s ease-in-out infinite; transform-origin: 186px 172px; }
+      .ringPulse { animation: ringPulse 1.9s ease-in-out infinite; transform-origin: 186px 172px; }
+      .spark1 { animation: twinkle 1.2s ease-in-out infinite; }
+      .spark2 { animation: twinkle 1.35s ease-in-out infinite .22s; }
+      .bar1 { animation: rise1 1.8s ease-in-out infinite; transform-origin: center bottom; }
+      .bar2 { animation: rise2 1.8s ease-in-out infinite .14s; transform-origin: center bottom; }
+      .bar3 { animation: rise3 1.8s ease-in-out infinite .28s; transform-origin: center bottom; }
+      .lineFlow { stroke-dasharray: 6 8; animation: dashMove 1.6s linear infinite; }
+
+      @keyframes floaty {
+        0%,100% { transform: translateY(0px); }
+        50% { transform: translateY(-4px); }
+      }
+      @keyframes arrowDrop {
+        0% { transform: translateY(-6px); opacity: 0.2; }
+        35% { opacity: 1; }
+        100% { transform: translateY(6px); opacity: 0.95; }
+      }
+      @keyframes ringPulse {
+        0%,100% { transform: scale(1); opacity: 0.95; }
+        50% { transform: scale(1.06); opacity: 1; }
+      }
+      @keyframes twinkle {
+        0%,100% { opacity: .55; transform: scale(1) rotate(0deg); }
+        50% { opacity: 1; transform: scale(1.18) rotate(10deg); }
+      }
+      @keyframes rise1 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.18); }
+      }
+      @keyframes rise2 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(0.85); }
+      }
+      @keyframes rise3 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.22); }
+      }
+      @keyframes dashMove {
+        to { stroke-dashoffset: -28; }
+      }
+    </style>
+  </defs>
+
+  <!-- decorative sparks -->
+  <g filter="url(#glow)">
+    <path class="spark1" d="M30 48L34 58L44 62L34 66L30 76L26 66L16 62L26 58L30 48Z" fill="#67E8F9"/>
+    <path class="spark2" d="M220 34L224 44L234 48L224 52L220 62L216 52L206 48L216 44L220 34Z" fill="#FDE047"/>
+  </g>
+
+  <!-- document -->
+  <g class="floaty" filter="url(#glow)">
+    <path d="M34 34C34 24.059 42.059 16 52 16H127.5C132.805 16 137.893 18.107 141.643 21.857L181.143 61.357C184.893 65.107 187 70.195 187 75.5V204C187 213.941 178.941 222 169 222H52C42.059 222 34 213.941 34 204V34Z"
+          fill="#0F172A" fill-opacity=".95" stroke="url(#docGrad)" stroke-width="3.2"/>
+    <path d="M128 16V56C128 65.941 136.059 74 146 74H186" fill="none" stroke="url(#docGrad)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- title and lines -->
+    <rect x="56" y="48" width="62" height="8" rx="4" fill="#E2E8F0"/>
+    <rect x="56" y="66" width="86" height="6" rx="3" fill="#94A3B8"/>
+    <rect x="56" y="80" width="72" height="6" rx="3" fill="#94A3B8"/>
+
+    <!-- report chart card -->
+    <rect x="52" y="106" width="92" height="78" rx="16" fill="#111827" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="66" y1="168" x2="128" y2="168" stroke="#475569" stroke-width="2.4" stroke-linecap="round"/>
+    <line x1="66" y1="122" x2="66" y2="168" stroke="#475569" stroke-width="2.4" stroke-linecap="round"/>
+    <rect class="bar1" x="78" y="146" width="10" height="22" rx="5" fill="url(#chartGrad)"/>
+    <rect class="bar2" x="95" y="134" width="10" height="34" rx="5" fill="#A78BFA"/>
+    <rect class="bar3" x="112" y="124" width="10" height="44" rx="5" fill="#34D399"/>
+    <path class="lineFlow" d="M70 160C80 156 88 148 96 144C103 140 111 134 122 124"
+          stroke="#F59E0B" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+    <!-- manual badge -->
+    <rect x="52" y="192" width="54" height="16" rx="8" fill="#A78BFA" fill-opacity=".2" stroke="#A78BFA" stroke-opacity=".55"/>
+    <rect x="112" y="192" width="32" height="16" rx="8" fill="#22D3EE" fill-opacity=".18" stroke="#22D3EE" stroke-opacity=".5"/>
+  </g>
+
+  <!-- download badge -->
+  <g filter="url(#glow)">
+    <circle class="ringPulse" cx="186" cy="172" r="42" fill="#111827" stroke="url(#dlGrad)" stroke-width="4"/>
+    <circle cx="186" cy="172" r="30" fill="url(#dlGrad)" fill-opacity=".1"/>
+    <path class="arrowDrop" d="M186 150V178" stroke="#FDE68A" stroke-width="7" stroke-linecap="round"/>
+    <path class="arrowDrop" d="M172 168L186 182L200 168" fill="none" stroke="#FDE68A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M166 194H206" stroke="#FDE68A" stroke-width="7" stroke-linecap="round"/>
+  </g>
+</svg>

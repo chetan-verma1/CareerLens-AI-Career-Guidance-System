@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore Tools | CareerLens</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0f172a;
+      --panel:rgba(255,255,255,0.06);
+      --panel-strong:rgba(255,255,255,0.08);
+      --text:#f8fafc;
+      --muted:rgba(203,213,225,0.78);
+      --green:#22c55e;
+      --blue:#3b82f6;
+      --amber:#f59e0b;
+      --border:rgba(255,255,255,0.10);
+      --shadow:0 20px 40px rgba(0,0,0,0.28);
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
+    body{
+      margin:0;
+      font-family:'Inter','Segoe UI',Arial,sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(34,197,94,0.14), transparent 24%),
+        radial-gradient(circle at 85% 18%, rgba(59,130,246,0.14), transparent 26%),
+        radial-gradient(circle at 50% 90%, rgba(245,158,11,0.08), transparent 24%),
+        var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    a{ text-decoration:none; color:inherit; }
+
+    .page-shell{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:100;
+      backdrop-filter:blur(14px);
+      background:rgba(15,23,42,0.72);
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .topbar-inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:14px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .brand img{
+      width:52px;
+      height:52px;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 18px rgba(0,0,0,0.16));
+    }
+
+    .brand-text h1{
+      margin:0;
+      font-size:28px;
+      font-weight:800;
+      letter-spacing:-0.4px;
+      background:linear-gradient(90deg,var(--green),var(--blue),var(--amber),var(--green));
+      background-size:300% auto;
+      -webkit-background-clip:text;
+      background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:gradientFlow 5s linear infinite;
+    }
+
+    .brand-text p{
+      margin:3px 0 0;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:0.3px;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .ghost-btn,
+    .primary-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      border-radius:14px;
+      padding:11px 18px;
+      font-size:14px;
+      font-weight:700;
+      transition:all .25s ease;
+      border:1px solid transparent;
+      cursor:pointer;
+    }
+
+    .ghost-btn{
+      background:rgba(255,255,255,0.04);
+      border-color:rgba(255,255,255,0.10);
+      color:var(--text);
+    }
+
+    .ghost-btn:hover{
+      transform:translateY(-2px);
+      background:rgba(255,255,255,0.08);
+    }
+
+    .primary-btn{
+      background:linear-gradient(135deg,var(--green),#4ade80);
+      color:#06230f;
+      box-shadow:0 12px 28px rgba(34,197,94,0.22);
+    }
+
+    .primary-btn:hover{
+      transform:translateY(-2px) scale(1.02);
+    }
+
+    .hero{
+      max-width:1240px;
+      margin:0 auto;
+      padding:54px 24px 28px;
+      display:grid;
+      grid-template-columns:1.15fr 0.85fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    .hero-copy{
+      animation:fadeUp .8s ease both;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.10);
+      color:#bbf7d0;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:0.6px;
+      text-transform:uppercase;
+      margin-bottom:16px;
+    }
+
+    .hero-copy h2{
+      margin:0 0 14px;
+      font-size:52px;
+      line-height:1.04;
+      letter-spacing:-1.4px;
+    }
+
+    .hero-copy p{
+      margin:0 0 24px;
+      max-width:760px;
+      font-size:17px;
+      line-height:1.75;
+      color:var(--muted);
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:26px;
+    }
+
+    .hero-points{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .point-chip{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:14px 14px;
+      color:var(--muted);
+      font-size:14px;
+      font-weight:600;
+      box-shadow:var(--shadow);
+    }
+
+    .hero-visual{
+      position:relative;
+      min-height:420px;
+      animation:fadeUp .95s ease both;
+    }
+
+    .visual-shell{
+      position:relative;
+      height:100%;
+      border-radius:28px;
+      background:linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border:1px solid rgba(255,255,255,0.10);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      padding:24px;
+    }
+
+    .orb{
+      position:absolute;
+      border-radius:999px;
+      filter:blur(8px);
+      opacity:.8;
+      animation:float 7s ease-in-out infinite;
+    }
+
+    .orb.one{
+      width:180px;height:180px;
+      background:rgba(34,197,94,0.22);
+      top:18px;right:20px;
+    }
+
+    .orb.two{
+      width:140px;height:140px;
+      background:rgba(59,130,246,0.20);
+      bottom:26px;left:18px;
+      animation-delay:1.3s;
+    }
+
+    .orb.three{
+      width:120px;height:120px;
+      background:rgba(245,158,11,0.16);
+      bottom:90px;right:120px;
+      animation-delay:2.1s;
+    }
+
+    .visual-grid{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      height:100%;
+    }
+
+    .mini-panel{
+      background:rgba(15,23,42,0.68);
+      border:1px solid rgba(255,255,255,0.09);
+      border-radius:22px;
+      padding:18px;
+      backdrop-filter:blur(10px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.18);
+    }
+
+    .mini-panel h3{
+      margin:0 0 12px;
+      font-size:16px;
+      color:#f8fafc;
+    }
+
+    .mini-stat{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 0;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .mini-stat:last-child{ border-bottom:none; }
+
+    .mini-stat strong{
+      color:#f8fafc;
+      font-size:14px;
+    }
+
+    .mini-panel .bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      height: 180px;
+      margin-top: 20px;
+    }
+
+    .mini-panel .bar {
+      flex: 1;
+      min-width: 18px;
+      border-radius: 14px 14px 6px 6px;
+      background: linear-gradient(180deg, #22c55e, #3b82f6);
+      box-shadow: 0 10px 24px rgba(34, 197, 94, 0.16);
+    }
+
+    .mini-panel .bar:nth-child(1) { height: 45%; }
+    .mini-panel .bar:nth-child(2) { height: 72%; }
+    .mini-panel .bar:nth-child(3) { height: 58%; }
+    .mini-panel .bar:nth-child(4) { height: 88%; }
+
+    .bars{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      height:180px;
+      padding-top:16px;
+    }
+
+    .bar{
+      flex:1;
+      border-radius:16px 16px 8px 8px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06));
+      position:relative;
+      overflow:hidden;
+    }
+
+    .bar::after{
+      content:"";
+      position:absolute;
+      inset:auto 0 0 0;
+      height:100%;
+      border-radius:inherit;
+      background:linear-gradient(180deg,var(--green),var(--blue));
+      transform-origin:bottom;
+      animation:growBar 1.4s ease both;
+    }
+
+    .bar:nth-child(1)::after{ height:68%; }
+    .bar:nth-child(2)::after{ height:86%; }
+    .bar:nth-child(3)::after{ height:58%; }
+    .bar:nth-child(4)::after{ height:74%; }
+
+    .section-wrap{
+      max-width:1240px;
+      margin:0 auto;
+      padding:14px 24px 28px;
+      width:100%;
+    }
+
+    .section-head{
+      margin-bottom:20px;
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .section-head h3{
+      margin:0;
+      font-size:34px;
+      letter-spacing:-0.8px;
+    }
+
+    .section-head p{
+      margin:8px 0 0;
+      max-width:760px;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .tools-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .tool-card{
+      position:relative;
+      overflow:hidden;
+      padding:22px;
+      border-radius:24px;
+      background:linear-gradient(165deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      transition:transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+      min-height:250px;
+    }
+
+    .tool-card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(34,197,94,0.24);
+      box-shadow:0 26px 48px rgba(0,0,0,0.26);
+    }
+
+    .tool-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.09);
+      font-size:12px;
+      font-weight:700;
+      color:#bbf7d0;
+      margin-bottom:14px;
+    }
+
+    .tool-card h4{
+      margin:0 0 10px;
+      font-size:23px;
+      letter-spacing:-0.4px;
+    }
+
+    .tool-card p{
+      margin:0 0 16px;
+      font-size:14px;
+      line-height:1.75;
+      color:var(--muted);
+    }
+
+    .feature-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:18px;
+    }
+
+    .feature-pill{
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      font-size:12px;
+      font-weight:600;
+      color:#e2e8f0;
+    }
+
+    .tool-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:#86efac;
+      font-weight:700;
+      font-size:14px;
+    }
+
+    .flow-section{ margin-top:8px; }
+
+    .flow-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:16px;
+    }
+
+    .flow-card{
+      padding:18px;
+      border-radius:22px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:var(--shadow);
+    }
+
+    .flow-no{
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      background:linear-gradient(135deg,var(--green),var(--blue));
+      color:#052012;
+      margin-bottom:14px;
+    }
+
+    .flow-card h4{
+      margin:0 0 8px;
+      font-size:18px;
+    }
+
+    .flow-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:14px;
+    }
+
+    .cta-band{
+      margin-top:18px;
+      padding:28px;
+      border-radius:28px;
+      background:linear-gradient(135deg, rgba(34,197,94,0.12), rgba(59,130,246,0.10));
+      border:1px solid rgba(255,255,255,0.10);
+      box-shadow:var(--shadow);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .cta-band h3{
+      margin:0 0 8px;
+      font-size:30px;
+      letter-spacing:-0.8px;
+    }
+
+    .cta-band p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      max-width:760px;
+    }
+
+    footer{
+      margin-top:auto;
+      padding:28px 24px 18px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      background:rgba(18,28,51,0.56);
+      backdrop-filter:blur(12px);
+    }
+
+    .footer-inner{
+      max-width:1240px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:1.2fr 1fr 1fr;
+      gap:24px;
+    }
+
+    .footer-col h4{
+      margin:0 0 12px;
+      color:var(--green);
+      font-size:20px;
+    }
+
+    .footer-col p,
+    .footer-col span{
+      display:block;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
+    .footer-bottom{
+      max-width:1240px;
+      margin:16px auto 0;
+      padding-top:14px;
+      border-top:1px solid rgba(255,255,255,0.06);
+      text-align:center;
+      color:rgba(148,163,184,0.78);
+      font-size:13px;
+    }
+
+    @keyframes gradientFlow{
+      0%{ background-position:0% }
+      100%{ background-position:300% }
+    }
+    @keyframes float{
+      0%,100%{ transform:translateY(0px) }
+      50%{ transform:translateY(-12px) }
+    }
+    @keyframes growBar{
+      from{ transform:scaleY(0) }
+      to{ transform:scaleY(1) }
+    }
+    @keyframes fadeUp{
+      from{ opacity:0; transform:translateY(18px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    @media (max-width: 1100px){
+      .tools-grid,
+      .flow-grid,
+      .footer-inner{
+        grid-template-columns:1fr 1fr;
+      }
+      .hero{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 760px){
+      .topbar-inner,
+      .hero,
+      .section-wrap{
+        padding-left:18px;
+        padding-right:18px;
+      }
+
+      .hero-copy h2{ font-size:38px; }
+
+      .hero-points,
+      .tools-grid,
+      .flow-grid,
+      .footer-inner,
+      .visual-grid{
+        grid-template-columns:1fr;
+      }
+
+      .topbar-inner{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .top-actions{ width:100%; }
+
+      .cta-band{ padding:22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CareerLens logo">
+          <div class="brand-text">
+            <h1>CareerLens</h1>
+            <p>Explore the full AI Career Toolkit</p>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <a href="/" class="ghost-btn">Back to Home</a>
+          <a href="/app#upload" class="primary-btn">Open CareerLens Tools</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">Explore CareerLens Tools</div>
+          <h2>One platform for resume intelligence, career fit, ATS readiness, and salary insights.</h2>
+          <p>
+            CareerLens combines multiple AI-powered tools into one smooth workflow. Upload a resume, extract structured details, predict your strongest career direction, understand skill gaps, estimate salary ranges, and review ATS readiness — all inside one product experience.
+          </p>
+
+          <div class="hero-actions">
+            <a href="/app#upload" class="primary-btn">Start Using Tools</a>
+            <a href="#all-tools" class="ghost-btn">See All Tools</a>
+          </div>
+
+          <div class="hero-points">
+            <div class="point-chip">Smart Analyzer with unified dashboard</div>
+            <div class="point-chip">Interactive career & skill tools</div>
+            <div class="point-chip">Printable report workflow</div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="visual-shell">
+            <div class="orb one"></div>
+            <div class="orb two"></div>
+            <div class="orb three"></div>
+
+            <div class="visual-grid">
+              <div class="mini-panel">
+                <h3>Career Snapshot</h3>
+                <div class="mini-stat"><span>Best Match</span><strong>Data Scientist</strong></div>
+                <div class="mini-stat"><span>Education</span><strong>Masters</strong></div>
+                <div class="mini-stat"><span>ATS Score</span><strong>84%</strong></div>
+                <div class="mini-stat"><span>Salary</span><strong>₹12–18 LPA</strong></div>
+              </div>
+
+              <div class="mini-panel">
+                <h3>Role Comparison</h3>
+                <div class="bars">
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                </div>
+              </div>
+
+              <div class="mini-panel">
+                <h3>Matched Skills</h3>
+                <div class="feature-list">
+                  <span class="feature-pill">Python</span>
+                  <span class="feature-pill">SQL</span>
+                  <span class="feature-pill">Pandas</span>
+                  <span class="feature-pill">Visualization</span>
+                </div>
+              </div>
+
+              <div class="mini-panel">
+                <h3>Improvement Focus</h3>
+                <div class="feature-list">
+                  <span class="feature-pill">Feature Engineering</span>
+                  <span class="feature-pill">Statistics</span>
+                  <span class="feature-pill">MLflow</span>
+                  <span class="feature-pill">Interview Readiness</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="all-tools" class="section-wrap">
+        <div class="section-head">
+          <div>
+            <h3>All Tools at a Glance</h3>
+            <p>Each tool is designed to solve one focused career problem while still fitting into one connected user journey.</p>
+          </div>
+        </div>
+
+        <div class="tools-grid">
+          <article class="tool-card">
+            <div class="tool-badge">01 • Smart Analyzer</div>
+            <h4>Smart Analyzer</h4>
+            <p>Upload one resume and instantly get a unified dashboard with best career match, ATS score, salary estimate, skills, and suggestions.</p>
+            <div class="feature-list">
+              <span class="feature-pill">Unified Output</span>
+              <span class="feature-pill">Visual Dashboard</span>
+              <span class="feature-pill">Best Career Match</span>
+            </div>
+            <a href="/app#upload" class="tool-link">Main entry point →</a>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-badge">02 • Resume Extractor</div>
+            <h4>Resume Extractor</h4>
+            <p>Parse resumes into structured information like name, education, skills, experience, and raw text preview for fast review and downstream analysis.</p>
+            <div class="feature-list">
+              <span class="feature-pill">PDF / DOCX</span>
+              <span class="feature-pill">Structured Parsing</span>
+              <span class="feature-pill">Profile Summary</span>
+            </div>
+            <a href="/app#resumeTool" class="tool-link">Data extraction →</a>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-badge">03 • Career Predictor</div>
+            <h4>Career Predictor</h4>
+            <p>Build a profile with skills, interests, education, and experience, then identify the strongest-fit role and domain using the model’s predictions.</p>
+            <div class="feature-list">
+              <span class="feature-pill">Top Role Matches</span>
+              <span class="feature-pill">Domain Signals</span>
+              <span class="feature-pill">Interactive Inputs</span>
+            </div>
+            <a href="/app#careerTool" class="tool-link">Explore fit →</a>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-badge">04 • Skill Gap Analyzer</div>
+            <h4>Skill Gap Analyzer</h4>
+            <p>Compare your current skill stack against a target role and understand which skills are matched, missing, and most important to improve next.</p>
+            <div class="feature-list">
+              <span class="feature-pill">Matched Skills</span>
+              <span class="feature-pill">Missing Skills</span>
+              <span class="feature-pill">Readiness View</span>
+            </div>
+            <a href="/app#skillTool" class="tool-link">Close the gap →</a>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-badge">05 • Salary Predictor</div>
+            <h4>Salary Predictor</h4>
+            <p>Estimate role-specific salary ranges using domain, state, and experience inputs with India-focused salary presentation.</p>
+            <div class="feature-list">
+              <span class="feature-pill">India Focused</span>
+              <span class="feature-pill">Role Search</span>
+              <span class="feature-pill">State + Experience</span>
+            </div>
+            <a href="/app#salaryTool" class="tool-link">Estimate salary →</a>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-badge">06 • ATS Checker</div>
+            <h4>ATS Checker</h4>
+            <p>Check overall ATS quality and role alignment to understand how clearly and effectively the resume communicates relevant strengths.</p>
+            <div class="feature-list">
+              <span class="feature-pill">General ATS</span>
+              <span class="feature-pill">Role Context</span>
+              <span class="feature-pill">Actionable Feedback</span>
+            </div>
+            <a href="/app#atsTool" class="tool-link">Improve resume fit →</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-wrap flow-section">
+        <div class="section-head">
+          <div>
+            <h3>Suggested Workflow</h3>
+            <p>A simple path for users to get the most value from the platform without feeling lost.</p>
+          </div>
+        </div>
+
+        <div class="flow-grid">
+          <div class="flow-card">
+            <div class="flow-no">1</div>
+            <h4>Upload Resume</h4>
+            <p>Start with Smart Analyzer or Resume Extractor to convert raw resume content into structured insight.</p>
+          </div>
+
+          <div class="flow-card">
+            <div class="flow-no">2</div>
+            <h4>Understand Fit</h4>
+            <p>Use Career Predictor to see where the profile aligns most strongly and which role comes out on top.</p>
+          </div>
+
+          <div class="flow-card">
+            <div class="flow-no">3</div>
+            <h4>Improve Gaps</h4>
+            <p>Use Skill Gap Analyzer and ATS Checker to strengthen missing skills and improve resume readiness.</p>
+          </div>
+
+          <div class="flow-card">
+            <div class="flow-no">4</div>
+            <h4>Plan Next Move</h4>
+            <p>Use Salary Predictor and report export to support practical, job-focused decision making.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-wrap">
+        <div class="cta-band">
+          <div>
+            <h3>Ready to explore your best career path?</h3>
+            <p>Open the app and start with Smart Analyzer to see the full CareerLens experience in one connected workflow.</p>
+          </div>
+          <a href="/app#upload" class="primary-btn">Launch CareerLens</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-col">
+          <h4>CareerLens</h4>
+          <p>AI-powered career exploration, resume intelligence, ATS analysis, and salary insight — built into one platform.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Core Tools</h4>
+          <span>Smart Analyzer</span>
+          <span>Resume Extractor</span>
+          <span>Career Predictor</span>
+          <span>Skill Gap Analyzer</span>
+        </div>
+
+        <div class="footer-col">
+          <h4>More</h4>
+          <span>Salary Predictor</span>
+          <span>ATS Checker</span>
+          <span>Downloadable Reports</span>
+          <span>Interactive UX Flow</span>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2026 CareerLens • Developed by Chetan Verma
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

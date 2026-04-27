@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dashboard icon">
+  <defs>
+    <linearGradient id="panelGrad" x1="92" y1="72" x2="414" y2="414" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="0.45" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+    <linearGradient id="chartGrad" x1="140" y1="180" x2="380" y2="332" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="0.5" stop-color="#F97316"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="0.5" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.35 0" result="glowColor"/>
+      <feBlend in="SourceGraphic" in2="glowColor" mode="screen"/>
+    </filter>
+    <style>
+      .floaty { animation: floaty 3s ease-in-out infinite; transform-origin: 50% 50%; }
+      .ringSpin { animation: ringSpin 6s linear infinite; transform-origin: 362px 154px; }
+      .bar1 { animation: rise1 1.9s ease-in-out infinite; transform-origin: center bottom; }
+      .bar2 { animation: rise2 1.9s ease-in-out infinite .12s; transform-origin: center bottom; }
+      .bar3 { animation: rise3 1.9s ease-in-out infinite .24s; transform-origin: center bottom; }
+      .lineMove { animation: dashMove 1.6s linear infinite; }
+      .node1 { animation: pulse 1.5s ease-in-out infinite; }
+      .node2 { animation: pulse 1.5s ease-in-out infinite .2s; }
+      .node3 { animation: pulse 1.5s ease-in-out infinite .4s; }
+      .spark1 { animation: twinkle 1.2s ease-in-out infinite; }
+      .spark2 { animation: twinkle 1.35s ease-in-out infinite .22s; }
+      .spark3 { animation: twinkle 1.15s ease-in-out infinite .44s; }
+      .gaugeNeedle { animation: needleSweep 2.2s ease-in-out infinite; transform-origin: 362px 154px; }
+      .miniPulse { animation: miniPulse 1.8s ease-in-out infinite; }
+
+      @keyframes floaty {
+        0%,100% { transform: translateY(0px); }
+        50% { transform: translateY(-6px); }
+      }
+      @keyframes ringSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes rise1 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.16); }
+      }
+      @keyframes rise2 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(0.84); }
+      }
+      @keyframes rise3 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.24); }
+      }
+      @keyframes dashMove {
+        to { stroke-dashoffset: -34; }
+      }
+      @keyframes pulse {
+        0%,100% { transform: scale(1); opacity: .86; }
+        50% { transform: scale(1.16); opacity: 1; }
+      }
+      @keyframes twinkle {
+        0%,100% { opacity: .55; transform: scale(1) rotate(0deg); }
+        50% { opacity: 1; transform: scale(1.2) rotate(10deg); }
+      }
+      @keyframes needleSweep {
+        0%,100% { transform: rotate(-28deg); }
+        50% { transform: rotate(28deg); }
+      }
+      @keyframes miniPulse {
+        0%,100% { opacity: .78; }
+        50% { opacity: 1; }
+      }
+    </style>
+  </defs>
+
+  <!-- Decorative sparks -->
+  <g filter="url(#glow)">
+    <path class="spark1" d="M110 96L116 110L130 116L116 122L110 136L104 122L90 116L104 110L110 96Z" fill="#FDE047"/>
+    <path class="spark2" d="M418 108L422 118L432 122L422 126L418 136L414 126L404 122L414 118L418 108Z" fill="#C4B5FD"/>
+    <path class="spark3" d="M120 364L124 374L134 378L124 382L120 392L116 382L106 378L116 374L120 364Z" fill="#67E8F9"/>
+  </g>
+
+  <!-- Main dashboard panel -->
+  <g class="floaty" filter="url(#glow)">
+    <rect x="86" y="72" width="340" height="368" rx="34" fill="#0F172A" fill-opacity=".92" stroke="url(#panelGrad)" stroke-width="4"/>
+
+    <!-- top cards -->
+    <rect x="116" y="102" width="132" height="76" rx="22" fill="#111827" stroke="rgba(255,255,255,0.08)"/>
+    <rect x="264" y="102" width="132" height="76" rx="22" fill="#111827" stroke="rgba(255,255,255,0.08)"/>
+
+    <rect class="miniPulse" x="136" y="124" width="52" height="12" rx="6" fill="url(#cardGrad)"/>
+    <rect x="136" y="146" width="80" height="10" rx="5" fill="#CBD5E1" fill-opacity=".72"/>
+
+    <!-- gauge -->
+    <path d="M318 172A44 44 0 1 1 406 172" stroke="url(#chartGrad)" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <circle cx="362" cy="154" r="28" fill="url(#chartGrad)" fill-opacity=".08"/>
+    <circle class="ringSpin" cx="362" cy="154" r="24" fill="none" stroke="url(#chartGrad)" stroke-width="2.5" stroke-dasharray="6 8"/>
+    <path class="gaugeNeedle" d="M362 154L388 140" stroke="#FFF7ED" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="362" cy="154" r="7" fill="#FFF7ED"/>
+
+    <!-- big chart card -->
+    <rect x="116" y="198" width="280" height="142" rx="26" fill="#111827" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="144" y1="312" x2="368" y2="312" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+    <line x1="144" y1="226" x2="144" y2="312" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+
+    <rect class="bar1" x="170" y="268" width="24" height="44" rx="10" fill="#22D3EE"/>
+    <rect class="bar2" x="212" y="244" width="24" height="68" rx="10" fill="#A78BFA"/>
+    <rect class="bar3" x="254" y="222" width="24" height="90" rx="10" fill="#34D399"/>
+
+    <path class="lineMove" d="M152 294C174 284 194 272 216 262C236 252 256 238 282 230C304 223 326 222 356 206"
+          stroke="url(#chartGrad)" stroke-width="6" stroke-linecap="round" fill="none" stroke-dasharray="8 10"/>
+    <circle class="node1" cx="216" cy="262" r="7" fill="#FDE047"/>
+    <circle class="node2" cx="282" cy="230" r="7" fill="#FB7185"/>
+    <circle class="node3" cx="356" cy="206" r="7" fill="#C4B5FD"/>
+
+    <!-- bottom mini cards -->
+    <rect x="116" y="358" width="124" height="50" rx="18" fill="#111827" stroke="rgba(255,255,255,0.08)"/>
+    <rect x="252" y="358" width="144" height="50" rx="18" fill="#111827" stroke="rgba(255,255,255,0.08)"/>
+
+    <rect x="136" y="376" width="54" height="12" rx="6" fill="#34D399" fill-opacity=".9"/>
+    <circle class="miniPulse" cx="214" cy="382" r="8" fill="#22D3EE"/>
+
+    <rect x="272" y="374" width="74" height="12" rx="6" fill="#A78BFA" fill-opacity=".88"/>
+    <rect x="354" y="374" width="20" height="12" rx="6" fill="#FDE047" fill-opacity=".92"/>
+  </g>
+</svg>

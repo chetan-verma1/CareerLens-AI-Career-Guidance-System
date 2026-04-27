@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerLens | Welcome</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body class="landing-body">
+
+  <div class="landing-shell">
+    <div class="landing-bg-blur blur-one"></div>
+    <div class="landing-bg-blur blur-two"></div>
+    <div class="landing-grid"></div>
+
+    <div class="landing-particles">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="landing-page-wrap">
+      <div class="landing-card">
+        <div class="landing-logo-wrap">
+          <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="CareerLens Logo"
+            class="landing-logo"
+          >
+        </div>
+
+        <h1 class="landing-title">CareerLens</h1>
+        <p class="landing-subtitle">An AI Powered Career Guidance and Skill Gap Analysis System</p>
+
+        <p class="landing-description">
+          Analyze resumes, extract key details, predict suitable careers, estimate salary,
+          evaluate ATS readiness, and identify skill gaps through one intelligent AI platform.
+        </p>
+
+        <div class="landing-button-row">
+          <a href="/app" class="landing-btn landing-btn-primary">Analyze Resume</a>
+          <a href="/explore" class="landing-btn landing-btn-secondary">Explore Tools</a>
+        </div>
+
+        <div class="landing-feature-row">
+          <div class="landing-feature-card">
+            <div class="feature-icon">
+              <img src="{{ url_for('static', filename='images/smart.png') }}" alt="Smart Analyzer">
+            </div>
+            <h3>Smart Analyzer</h3>
+            <p>
+              Run the complete AI pipeline on your resume for career prediction,
+              ATS evaluation, salary estimation, and skill gap analysis.
+            </p>
+          </div>
+
+          <div class="landing-feature-card">
+            <div class="feature-icon">
+              <img src="{{ url_for('static', filename='images/resume.png') }}" alt="Resume Analyzer">
+            </div>
+            <h3>Resume Analyzer</h3>
+            <p>
+              Extract candidate skills, education, experience, and raw resume
+              content for structured analysis.
+            </p>
+          </div>
+
+          <div class="landing-feature-card">
+            <div class="feature-icon">
+              <img src="{{ url_for('static', filename='images/tools.png') }}" alt="ATS and Career Tools">
+            </div>
+            <h3>ATS + Career Tools</h3>
+            <p>
+              Check ATS readiness, predict careers, estimate salary ranges,
+              and identify missing skills for growth.
+            </p>
+          </div>
+        </div>
+
+        <div class="section-divider">
+          <span></span>
+        </div>
+
+        <div class="landing-knowledge-wrapper">
+          <h2>Why CareerLens Matters</h2>
+
+          <p>
+            CareerLens is designed as an AI-based career guidance and skill gap analysis
+            system that transforms traditional career counselling into a structured,
+            intelligent, and data-driven process.
+          </p>
+
+          <p>
+            It uses machine learning and NLP to provide personalized career insights,
+            realistic salary expectations, and measurable skill intelligence, while helping
+            bridge the gap between academic preparation and industry requirements.
+          </p>
+
+          <div class="section-divider">
+            <span></span>
+          </div>
+
+          <div class="landing-knowledge-grid">
+            <div class="knowledge-box">
+              <h3>Core Intelligence</h3>
+              <p>
+                Combines resume analysis, career recommendation, skill gap identification,
+                and salary prediction into one unified AI-powered framework for career
+                decision support.
+              </p>
+            </div>
+
+            <div class="knowledge-box">
+              <h3>Real-World Impact</h3>
+              <p>
+                Helps learners become more industry-ready by identifying missing skills,
+                supporting self-assessment, and aligning career decisions with practical
+                market expectations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="landing-footer-horizontal">
+        <div class="footer-container">
+          <div class="footer-left">
+            <h3>CareerLens</h3>
+            <p>AI-driven career guidance, resume intelligence, ATS analysis and skill mapping.</p>
+          </div>
+
+          <div class="footer-middle">
+            <span>Smart Analyzer</span>
+            <span>Resume Analyzer</span>
+            <span>ATS + Career Tools</span>
+          </div>
+
+          <div class="footer-right">
+            <span>Python</span>
+            <span>Flask</span>
+            <span>Machine Learning + NLP</span>
+          </div>
+        </div>
+
+        <div class="footer-bottom-line">
+          © 2026 CareerLens | Developed by Chetan Verma
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+</body>
+</html>

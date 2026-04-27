@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Smart Resume Analyzer icon">
+  <defs>
+    <linearGradient id="docGrad" x1="120" y1="90" x2="360" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7C3AED"/>
+      <stop offset="0.5" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="250" y1="170" x2="440" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F43F5E"/>
+      <stop offset="0.5" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="bar1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="bar2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#A855F7"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+    <linearGradient id="bar3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.45 0" result="glowColor"/>
+      <feBlend in="SourceGraphic" in2="glowColor" mode="screen"/>
+    </filter>
+    <style>
+      .root { cursor: pointer; }
+      .floaty, .pulse, .scan, .spark, .barGrow, .nodePulse, .ringSpin, .tilt, .lineFlow {
+        animation-play-state: paused;
+      }
+      .floaty { animation: floaty 2.4s ease-in-out infinite; transform-origin: 50% 50%; }
+      .pulse { animation: pulse 1.6s ease-in-out infinite; transform-origin: center; }
+      .scan { animation: scan 1.8s ease-in-out infinite; }
+      .spark.s1 { animation: twinkle 1.2s ease-in-out infinite; animation-delay: 0s; transform-origin: 160px 120px; }
+      .spark.s2 { animation: twinkle 1.3s ease-in-out infinite; animation-delay: .2s; transform-origin: 370px 135px; }
+      .spark.s3 { animation: twinkle 1.15s ease-in-out infinite; animation-delay: .4s; transform-origin: 135px 345px; }
+      .barGrow.b1 { animation: barGrow1 1.4s ease-in-out infinite; transform-origin: center 310px; }
+      .barGrow.b2 { animation: barGrow2 1.4s ease-in-out infinite; transform-origin: center 300px; animation-delay: .08s; }
+      .barGrow.b3 { animation: barGrow3 1.4s ease-in-out infinite; transform-origin: center 290px; animation-delay: .16s; }
+      .nodePulse.n1 { animation: nodePulse 1.8s ease-in-out infinite; animation-delay: 0s; }
+      .nodePulse.n2 { animation: nodePulse 1.8s ease-in-out infinite; animation-delay: .2s; }
+      .nodePulse.n3 { animation: nodePulse 1.8s ease-in-out infinite; animation-delay: .4s; }
+      .ringSpin { animation: ringSpin 5s linear infinite; transform-origin: 336px 252px; }
+      .tilt { animation: tilt 2.2s ease-in-out infinite; transform-origin: 336px 252px; }
+      .lineFlow { stroke-dasharray: 8 10; animation: dash 1.4s linear infinite; }
+
+      .root:hover .floaty,
+      .root:hover .pulse,
+      .root:hover .scan,
+      .root:hover .spark,
+      .root:hover .barGrow,
+      .root:hover .nodePulse,
+      .root:hover .ringSpin,
+      .root:hover .tilt,
+      .root:hover .lineFlow {
+        animation-play-state: running;
+      }
+
+      @keyframes floaty {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: .65; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.08); }
+      }
+      @keyframes scan {
+        0% { transform: translateY(-115px); opacity: 0; }
+        15% { opacity: .95; }
+        85% { opacity: .95; }
+        100% { transform: translateY(125px); opacity: 0; }
+      }
+      @keyframes twinkle {
+        0%, 100% { opacity: .55; transform: scale(1) rotate(0deg); }
+        50% { opacity: 1; transform: scale(1.25) rotate(14deg); }
+      }
+      @keyframes barGrow1 {
+        0%, 100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.18); }
+      }
+      @keyframes barGrow2 {
+        0%, 100% { transform: scaleY(1); }
+        50% { transform: scaleY(0.86); }
+      }
+      @keyframes barGrow3 {
+        0%, 100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.22); }
+      }
+      @keyframes nodePulse {
+        0%, 100% { opacity: .75; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.22); }
+      }
+      @keyframes ringSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes tilt {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(-7deg); }
+      }
+      @keyframes dash {
+        to { stroke-dashoffset: -36; }
+      }
+    </style>
+  </defs>
+
+  <g class="root">
+    <!-- Decorative sparks -->
+    <g filter="url(#glow)">
+      <path class="spark s1" d="M160 104L166 118L180 124L166 130L160 144L154 130L140 124L154 118L160 104Z" fill="#FDE047"/>
+      <path class="spark s2" d="M370 120L374 130L384 134L374 138L370 148L366 138L356 134L366 130L370 120Z" fill="#C4B5FD"/>
+      <path class="spark s3" d="M136 330L140 340L150 344L140 348L136 358L132 348L122 344L132 340L136 330Z" fill="#67E8F9"/>
+    </g>
+
+    <!-- Resume / document -->
+    <g class="floaty" filter="url(#glow)">
+      <path d="M126 84C126 68.536 138.536 56 154 56H281.331C288.757 56 295.879 58.948 301.133 64.201L354.799 117.867C360.052 123.121 363 130.243 363 137.669V360C363 375.464 350.464 388 335 388H154C138.536 388 126 375.464 126 360V84Z" fill="rgba(17,24,39,0.08)"/>
+      <path d="M138 88C138 74.745 148.745 64 162 64H277.686C284.052 64 290.157 66.529 294.657 71.029L347.971 124.343C352.471 128.843 355 134.948 355 141.314V352C355 365.255 344.255 376 331 376H162C148.745 376 138 365.255 138 352V88Z" fill="#0F172A" fill-opacity="0.86" stroke="url(#docGrad)" stroke-width="4"/>
+      <path d="M280 64V114C280 127.255 290.745 138 304 138H354" fill="none" stroke="url(#docGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- document lines -->
+      <rect x="168" y="122" width="104" height="12" rx="6" fill="#E2E8F0" fill-opacity="0.9"/>
+      <rect x="168" y="150" width="140" height="10" rx="5" fill="#CBD5E1" fill-opacity="0.72"/>
+      <rect x="168" y="174" width="118" height="10" rx="5" fill="#CBD5E1" fill-opacity="0.62"/>
+
+      <!-- analytics block -->
+      <rect x="164" y="230" width="136" height="86" rx="18" fill="#111827" fill-opacity="0.85" stroke="rgba(255,255,255,0.08)"/>
+      <line x1="182" y1="298" x2="282" y2="298" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+      <line x1="182" y1="246" x2="182" y2="298" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+      <rect class="barGrow b1" x="198" y="266" width="18" height="32" rx="9" fill="url(#bar1)"/>
+      <rect class="barGrow b2" x="228" y="248" width="18" height="50" rx="9" fill="url(#bar2)"/>
+      <rect class="barGrow b3" x="258" y="234" width="18" height="64" rx="9" fill="url(#bar3)"/>
+    </g>
+
+    <!-- AI network -->
+    <g filter="url(#glow)">
+      <path class="lineFlow" d="M332 178C362 182 383 196 394 222M317 241C333 232 349 226 373 224M314 290C335 283 356 271 374 252" stroke="url(#ringGrad)" stroke-width="4" stroke-linecap="round"/>
+      <circle class="nodePulse n1" cx="394" cy="222" r="10" fill="#F472B6"/>
+      <circle class="nodePulse n2" cx="373" cy="224" r="8" fill="#22D3EE"/>
+      <circle class="nodePulse n3" cx="374" cy="252" r="9" fill="#A78BFA"/>
+    </g>
+
+    <!-- Magnifying glass -->
+    <g class="tilt" filter="url(#glow)">
+      <circle cx="336" cy="252" r="74" fill="url(#ringGrad)" fill-opacity="0.12"/>
+      <circle cx="336" cy="252" r="62" fill="none" stroke="url(#ringGrad)" stroke-width="14"/>
+      <circle class="ringSpin" cx="336" cy="252" r="49" fill="none" stroke="url(#ringGrad)" stroke-width="4" stroke-linecap="round" stroke-dasharray="14 16"/>
+      <rect x="378" y="300" width="28" height="90" rx="14" transform="rotate(-42 378 300)" fill="url(#ringGrad)"/>
+      <circle class="pulse" cx="336" cy="252" r="18" fill="#F8FAFC" fill-opacity="0.85"/>
+      <path d="M300 252H372" stroke="#E0F2FE" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+      <path d="M336 216V288" stroke="#E0F2FE" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+
+      <!-- scan beam clipped inside lens -->
+      <clipPath id="lensClip">
+        <circle cx="336" cy="252" r="55"/>
+      </clipPath>
+      <g clip-path="url(#lensClip)">
+        <rect class="scan" x="276" y="190" width="120" height="18" rx="9" fill="#67E8F9" fill-opacity="0.85"/>
+        <rect class="scan" x="276" y="190" width="120" height="42" rx="21" fill="url(#ringGrad)" fill-opacity="0.08"/>
+      </g>
+    </g>
+  </g>
+</svg>

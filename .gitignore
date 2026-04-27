@@ -1,0 +1,35 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment files
+.env
+*.env
+instance/
+
+# Uploaded resumes / private files
+uploads/*
+!uploads/.gitkeep
+
+# Flask
+.flaskenv
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Testing/cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log

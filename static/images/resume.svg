@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Resume Extractor icon">
+  <defs>
+    <linearGradient id="docGrad" x1="120" y1="70" x2="340" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22C55E"/>
+      <stop offset="0.5" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="extractGrad" x1="250" y1="150" x2="430" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="0.5" stop-color="#F97316"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+    <linearGradient id="chipGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.35 0" result="glowColor"/>
+      <feBlend in="SourceGraphic" in2="glowColor" mode="screen"/>
+    </filter>
+    <style>
+      .floaty { animation: floaty 2.8s ease-in-out infinite; transform-origin: 50% 50%; }
+      .beamPulse { animation: beamPulse 1.7s ease-in-out infinite; transform-origin: 350px 244px; }
+      .arrowMove { animation: arrowMove 1.6s ease-in-out infinite; }
+      .chipPulse { animation: chipPulse 2s ease-in-out infinite; transform-origin: center; }
+      .lineShift { animation: lineShift 1.5s ease-in-out infinite; }
+      .spark1 { animation: twinkle 1.2s ease-in-out infinite; }
+      .spark2 { animation: twinkle 1.3s ease-in-out infinite .2s; }
+      .spark3 { animation: twinkle 1.15s ease-in-out infinite .4s; }
+
+      @keyframes floaty {
+        0%,100% { transform: translateY(0px); }
+        50% { transform: translateY(-6px); }
+      }
+      @keyframes beamPulse {
+        0%,100% { opacity: .55; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.06); }
+      }
+      @keyframes arrowMove {
+        0%,100% { transform: translateX(0px); opacity: .9; }
+        50% { transform: translateX(8px); opacity: 1; }
+      }
+      @keyframes chipPulse {
+        0%,100% { transform: scale(1); opacity: .9; }
+        50% { transform: scale(1.08); opacity: 1; }
+      }
+      @keyframes lineShift {
+        0%,100% { opacity: .7; }
+        50% { opacity: 1; }
+      }
+      @keyframes twinkle {
+        0%,100% { opacity: .5; transform: scale(1) rotate(0deg); }
+        50% { opacity: 1; transform: scale(1.2) rotate(10deg); }
+      }
+    </style>
+  </defs>
+
+  <!-- Decorative sparks -->
+  <g filter="url(#glow)">
+    <path class="spark1" d="M124 104L130 118L144 124L130 130L124 144L118 130L104 124L118 118L124 104Z" fill="#FDE047"/>
+    <path class="spark2" d="M406 112L410 122L420 126L410 130L406 140L402 130L392 126L402 122L406 112Z" fill="#C4B5FD"/>
+    <path class="spark3" d="M106 348L110 358L120 362L110 366L106 376L102 366L92 362L102 358L106 348Z" fill="#67E8F9"/>
+  </g>
+
+  <!-- Resume document -->
+  <g class="floaty" filter="url(#glow)">
+    <path d="M120 84C120 68.536 132.536 56 148 56H280C287.426 56 294.548 58.948 299.802 64.201L353.799 118.198C359.052 123.452 362 130.574 362 138V358C362 373.464 349.464 386 334 386H148C132.536 386 120 373.464 120 358V84Z"
+          fill="#0F172A" fill-opacity="0.9" stroke="url(#docGrad)" stroke-width="4"/>
+    <path d="M280 56V114C280 127.255 290.745 138 304 138H362" fill="none" stroke="url(#docGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- text lines -->
+    <rect x="152" y="120" width="112" height="12" rx="6" fill="#E2E8F0" fill-opacity=".95"/>
+    <rect x="152" y="148" width="144" height="10" rx="5" fill="#CBD5E1" fill-opacity=".78"/>
+    <rect x="152" y="172" width="126" height="10" rx="5" fill="#CBD5E1" fill-opacity=".62"/>
+
+    <!-- selected fields -->
+    <rect class="lineShift" x="148" y="216" width="130" height="22" rx="11" fill="#22D3EE" fill-opacity=".16" stroke="#22D3EE" stroke-opacity=".55"/>
+    <rect class="lineShift" x="148" y="252" width="160" height="22" rx="11" fill="#A78BFA" fill-opacity=".14" stroke="#A78BFA" stroke-opacity=".5"/>
+    <rect class="lineShift" x="148" y="288" width="118" height="22" rx="11" fill="#34D399" fill-opacity=".14" stroke="#34D399" stroke-opacity=".5"/>
+
+    <rect x="162" y="223" width="84" height="8" rx="4" fill="#67E8F9" fill-opacity=".95"/>
+    <rect x="162" y="259" width="108" height="8" rx="4" fill="#C4B5FD" fill-opacity=".9"/>
+    <rect x="162" y="295" width="76" height="8" rx="4" fill="#6EE7B7" fill-opacity=".9"/>
+  </g>
+
+  <!-- Extraction beam -->
+  <g filter="url(#glow)">
+    <path class="beamPulse" d="M288 244L390 244" stroke="url(#extractGrad)" stroke-width="10" stroke-linecap="round"/>
+    <path class="arrowMove" d="M370 224L404 244L370 264" fill="none" stroke="url(#extractGrad)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Extracted data / chip -->
+  <g class="chipPulse" filter="url(#glow)">
+    <rect x="334" y="176" width="108" height="136" rx="24" fill="#111827" fill-opacity=".92" stroke="url(#extractGrad)" stroke-width="4"/>
+    <rect x="356" y="200" width="44" height="14" rx="7" fill="url(#chipGrad)"/>
+    <rect x="356" y="230" width="64" height="10" rx="5" fill="#FDE68A" fill-opacity=".92"/>
+    <rect x="356" y="250" width="52" height="10" rx="5" fill="#FDBA74" fill-opacity=".9"/>
+    <rect x="356" y="270" width="58" height="10" rx="5" fill="#FCA5A5" fill-opacity=".9"/>
+
+    <!-- tiny structured nodes -->
+    <circle cx="408" cy="206" r="8" fill="#22D3EE"/>
+    <circle cx="388" cy="292" r="7" fill="#A78BFA"/>
+    <circle cx="416" cy="292" r="7" fill="#34D399"/>
+    <path d="M388 292H416" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+    <path d="M408 214V236" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

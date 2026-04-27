@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Skill Gap Analyzer icon">
+  <defs>
+    <linearGradient id="docGrad" x1="118" y1="66" x2="352" y2="392" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="0.5" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+    <linearGradient id="gapGrad" x1="240" y1="188" x2="438" y2="356" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="0.45" stop-color="#F97316"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+    <linearGradient id="skillGrad" x1="150" y1="210" x2="290" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="0.5" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.35 0" result="glowColor"/>
+      <feBlend in="SourceGraphic" in2="glowColor" mode="screen"/>
+    </filter>
+    <style>
+      .floaty { animation: floaty 2.8s ease-in-out infinite; transform-origin: 50% 50%; }
+      .bar1 { animation: rise1 1.8s ease-in-out infinite; transform-origin: center bottom; }
+      .bar2 { animation: rise2 1.8s ease-in-out infinite .12s; transform-origin: center bottom; }
+      .bar3 { animation: rise3 1.8s ease-in-out infinite .24s; transform-origin: center bottom; }
+      .scanRing { animation: ringSpin 5s linear infinite; transform-origin: 360px 238px; }
+      .pulseA { animation: pulseA 1.5s ease-in-out infinite; }
+      .pulseB { animation: pulseA 1.5s ease-in-out infinite .2s; }
+      .pulseC { animation: pulseA 1.5s ease-in-out infinite .4s; }
+      .bridgeDash { animation: dashMove 1.5s linear infinite; }
+      .spark1 { animation: twinkle 1.2s ease-in-out infinite; }
+      .spark2 { animation: twinkle 1.35s ease-in-out infinite .2s; }
+      .spark3 { animation: twinkle 1.15s ease-in-out infinite .45s; }
+      .beam { animation: beamPulse 1.8s ease-in-out infinite; }
+
+      @keyframes floaty {
+        0%,100% { transform: translateY(0px); }
+        50% { transform: translateY(-6px); }
+      }
+      @keyframes rise1 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.18); }
+      }
+      @keyframes rise2 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(0.84); }
+      }
+      @keyframes rise3 {
+        0%,100% { transform: scaleY(1); }
+        50% { transform: scaleY(1.24); }
+      }
+      @keyframes ringSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes pulseA {
+        0%,100% { transform: scale(1); opacity: .82; }
+        50% { transform: scale(1.18); opacity: 1; }
+      }
+      @keyframes dashMove {
+        to { stroke-dashoffset: -34; }
+      }
+      @keyframes twinkle {
+        0%,100% { opacity: .55; transform: scale(1) rotate(0deg); }
+        50% { opacity: 1; transform: scale(1.2) rotate(10deg); }
+      }
+      @keyframes beamPulse {
+        0%,100% { opacity: .55; }
+        50% { opacity: 1; }
+      }
+    </style>
+  </defs>
+
+  <!-- Decorative sparks -->
+  <g filter="url(#glow)">
+    <path class="spark1" d="M118 102L124 116L138 122L124 128L118 142L112 128L98 122L112 116L118 102Z" fill="#FDE047"/>
+    <path class="spark2" d="M414 116L418 126L428 130L418 134L414 144L410 134L400 130L410 126L414 116Z" fill="#C4B5FD"/>
+    <path class="spark3" d="M110 352L114 362L124 366L114 370L110 380L106 370L96 366L106 362L110 352Z" fill="#67E8F9"/>
+  </g>
+
+  <!-- Main document -->
+  <g class="floaty" filter="url(#glow)">
+    <path d="M118 84C118 68.536 130.536 56 146 56H279.5C286.926 56 294.048 58.948 299.302 64.201L355.799 120.698C361.052 125.952 364 133.074 364 140.5V360C364 375.464 351.464 388 336 388H146C130.536 388 118 375.464 118 360V84Z"
+          fill="#0F172A" fill-opacity=".9" stroke="url(#docGrad)" stroke-width="4"/>
+    <path d="M280 56V116C280 129.255 290.745 140 304 140H364" fill="none" stroke="url(#docGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- title lines -->
+    <rect x="150" y="118" width="118" height="12" rx="6" fill="#E2E8F0" fill-opacity=".95"/>
+    <rect x="150" y="146" width="144" height="10" rx="5" fill="#CBD5E1" fill-opacity=".74"/>
+
+    <!-- skills block -->
+    <rect x="146" y="204" width="156" height="120" rx="24" fill="#111827" fill-opacity=".92" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="170" y1="298" x2="278" y2="298" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+    <line x1="170" y1="226" x2="170" y2="298" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+
+    <rect class="bar1" x="188" y="260" width="18" height="38" rx="9" fill="url(#skillGrad)"/>
+    <rect class="bar2" x="220" y="240" width="18" height="58" rx="9" fill="#A78BFA"/>
+    <rect class="bar3" x="252" y="224" width="18" height="74" rx="9" fill="#34D399"/>
+  </g>
+
+  <!-- Gap / broken bridge -->
+  <g filter="url(#glow)">
+    <path d="M286 250H320" stroke="url(#gapGrad)" stroke-width="10" stroke-linecap="round"/>
+    <path d="M352 250H388" stroke="url(#gapGrad)" stroke-width="10" stroke-linecap="round"/>
+    <path class="bridgeDash" d="M320 250C327 242 334 238 341 238C348 238 355 242 352 250"
+          stroke="url(#gapGrad)" stroke-width="6" stroke-linecap="round" fill="none" stroke-dasharray="8 10"/>
+  </g>
+
+  <!-- Analyzer lens -->
+  <g filter="url(#glow)">
+    <circle cx="360" cy="238" r="60" fill="url(#gapGrad)" fill-opacity=".10"/>
+    <circle cx="360" cy="238" r="50" fill="none" stroke="url(#gapGrad)" stroke-width="10"/>
+    <circle class="scanRing" cx="360" cy="238" r="38" fill="none" stroke="url(#gapGrad)" stroke-width="3" stroke-dasharray="8 12"/>
+    <rect x="395" y="280" width="22" height="82" rx="11" transform="rotate(-42 395 280)" fill="url(#gapGrad)"/>
+
+    <!-- inside lens -->
+    <path class="beam" d="M330 238H390" stroke="#FFF7ED" stroke-width="4" stroke-linecap="round" opacity=".75"/>
+    <circle class="pulseA" cx="336" cy="238" r="7" fill="#22D3EE"/>
+    <circle class="pulseB" cx="360" cy="238" r="7" fill="#FB7185"/>
+    <circle class="pulseC" cx="384" cy="238" r="7" fill="#FDE047"/>
+  </g>
+
+  <!-- upward recommendation nodes -->
+  <g filter="url(#glow)">
+    <circle class="pulseA" cx="312" cy="320" r="8" fill="#22D3EE"/>
+    <circle class="pulseB" cx="350" cy="300" r="8" fill="#A78BFA"/>
+    <circle class="pulseC" cx="392" cy="280" r="8" fill="#34D399"/>
+    <path d="M312 320L350 300L392 280" stroke="url(#docGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>
+  </g>
+</svg>
