@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import re
 from collections import OrderedDict
-from datetime import datetime
+from datetime import datetime, UTC
 from typing import Dict, List, Optional, Tuple
 
 import pdfplumber
@@ -32,7 +32,7 @@ MONTHS = {
     "nov": 11, "november": 11,
     "dec": 12, "december": 12,
 }
-CURRENT_DATE = datetime.utcnow()
+CURRENT_DATE = datetime.now(UTC)
 MAX_REASONABLE_EXPERIENCE = 45.0
 
 SECTION_KEYWORDS = OrderedDict({
