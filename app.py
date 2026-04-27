@@ -81,6 +81,57 @@ def cleanup_uploaded_file(filepath: str):
         print(f"Could not delete uploaded file {filepath}: {e}")
 
 
+def validate_resume_document(filepath: str):
+    """
+    Validate whether uploaded PDF/DOCX appears to be a resume.
+    This prevents random PDFs/DOCX files from being processed.
+    """
+    resume_data = analyze_resume(filepath)
+
+    if not resume_data:
+        raise ValueError("Uploaded file could not be analyzed as a resume.")
+
+    raw_text = str(resume_data.get("Raw_Text", "")).strip()
+    skills = resume_data.get("Skills", []) or []
+    education = resume_data.get("Education", []) or []
+    experience = resume_data.get("Experience (Years)", 0)
+
+    if len(raw_text) < 100:
+        raise ValueError("Uploaded file does not contain enough resume content.")
+
+    text_lower = raw_text.lower()
+
+    resume_keywords = [
+        "resume", "curriculum vitae", "cv",
+        "education", "qualification", "academic",
+        "experience", "work experience", "internship",
+        "skills", "technical skills", "projects",
+        "certification", "objective", "profile",
+        "summary", "contact", "email", "phone"
+    ]
+
+    keyword_matches = sum(1 for keyword in resume_keywords if keyword in text_lower)
+
+    has_email_or_phone = (
+        "@" in raw_text
+        or any(char.isdigit() for char in raw_text)
+    )
+
+    has_resume_signals = (
+        len(skills) >= 1
+        or len(education) >= 1
+        or float(experience or 0) > 0
+        or keyword_matches >= 2
+    )
+
+    if not has_resume_signals or not has_email_or_phone:
+        raise ValueError(
+            "This file does not appear to be a resume. Please upload a valid resume PDF or DOCX file."
+        )
+
+    return resume_data
+
+
 @app.errorhandler(RequestEntityTooLarge)
 def handle_large_file(error):
     message = f"File is too large. Maximum allowed size is {MAX_UPLOAD_SIZE_MB} MB."
@@ -185,9 +236,10 @@ def index():
 
         try:
             filepath = save_uploaded_resume(file)
+            validated_resume_data = validate_resume_document(filepath)
 
             if tool_type == "resume_analyzer":
-                resume_result = analyze_resume(filepath)
+                resume_result = validated_resume_data
                 active_section = "resumeTool"
 
                 if not resume_result or not resume_result.get("Raw_Text"):
@@ -430,7 +482,7 @@ def ats_resume_check():
     try:
         filepath = save_uploaded_resume(file)
 
-        resume_data = analyze_resume(filepath)
+        resume_data = validate_resume_document(filepath)
 
         if not resume_data or not resume_data.get("Raw_Text"):
             return jsonify({"error": "Could not extract data from this resume."}), 400
