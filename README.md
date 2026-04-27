@@ -1,98 +1,184 @@
-# CareerLens
+# CareerLens: AI-Based Career Guidance and Skill Gap Analysis System
 
-CareerLens is a Flask-based career intelligence platform that analyzes resumes, predicts the most relevant career paths, estimates salary, evaluates ATS quality, and highlights skill gaps.
+CareerLens is a hybrid AI and machine-learning-based career guidance platform developed as an MCA final-year project. It analyzes user resumes, extracts skills, recommends suitable career roles, identifies missing skills, estimates salary ranges, and evaluates resume ATS compatibility.
 
-## Architecture
+The system is built using Python, Flask, Scikit-learn, rule-based NLP, TF-IDF vectorization, cosine similarity, fuzzy matching, and regression-based salary prediction.
 
-- `app.py` -> Flask routing layer
-- `modules/resume_analyzer.py` -> PDF/DOCX text extraction, name/skill/education/experience extraction
-- `modules/career_model.py` -> top-3 career prediction using TF-IDF similarity + skill overlap + education/experience scoring
-- `modules/career_pipeline.py` -> orchestration for smart analyzer output
-- `modules/career_skill.py` -> role skill gap analysis
-- `modules/resume_ats.py` -> ATS and role-fit scoring
-- `modules/salary_prediction.py` -> salary estimation model wrapper
+---
 
-## Data
+## Project Overview
 
-Core prediction relies on:
+Students and early professionals often face difficulty in choosing a suitable career path because of changing industry requirements, lack of personalized guidance, and limited awareness of required skills.
 
-- `data/career_role_profiles.csv`
-- `data/career_skills.csv`
-- `data/skills_data.csv`
+CareerLens solves this problem by providing an integrated career intelligence platform that offers:
 
-These files are organized as role profiles, required skills, aliases, keywords, domain labels, and expected experience ranges. The goal is deterministic and realistic role matching rather than probabilistic classification over fake resume rows.
+- Resume analysis
+- Career recommendation
+- Skill gap analysis
+- Salary prediction
+- ATS resume scoring
+- Smart analyzer dashboard
 
-## Setup
+---
 
-```bash
-python -m venv .venv
-source .venv/bin/activate        # Linux/macOS
-# .venv\Scripts\activate         # Windows
-pip install -r requirements.txt
-```
+## Key Features
 
-## Run
+### 1. Smart Resume Analyzer
 
-```bash
-python app.py
-```
+Uploads a resume and generates a complete career analysis report.
 
-Open:
+It includes:
 
-- `http://127.0.0.1:5000/`
+- Extracted candidate details
+- Top career recommendations
+- Skill gap analysis
+- ATS score
+- Salary estimate
+- Personalized improvement suggestions
 
-## Resume parsing behavior
+### 2. Resume Analyzer
 
-Supported input:
+Extracts structured information from PDF and DOCX resumes.
 
-- PDF
-- DOCX
+Extracted fields include:
 
-Analyzer output format:
+- Name
+- Skills
+- Education
+- Experience
+- Raw resume text
 
-```python
-{
-    "Name": "Candidate Name",
-    "Skills": ["python", "sql", "machine learning"],
-    "Experience (Years)": 2.5,
-    "Education": ["btech computer science", "msc data science"],
-    "Raw_Text": "..."
-}
-```
+### 3. Career Recommendation System
 
-## Prediction logic
+Recommends suitable career roles using a hybrid matching approach.
 
-Career prediction is built from a weighted hybrid score:
+Techniques used:
 
-- TF-IDF similarity between resume content and role profile text
-- exact/fuzzy skill overlap
-- education fit
-- experience fit
-- domain keyword alignment
+- TF-IDF vectorization
+- Cosine similarity
+- Skill overlap scoring
+- Education matching
+- Experience matching
+- Domain matching
+- Weighted ranking
 
-Returned output includes:
+### 4. Skill Gap Analysis
 
-- top 3 career predictions
-- confidence percentages normalized across the top matches
-- matched/missing skills
-- ATS scores
-- salary estimate payload
+Compares user skills with required skills for a target career role.
 
-## Project size and deployment notes
+Output includes:
 
-Do **not** keep `venv/` inside the project folder.
+- Matched skills
+- Missing skills
+- Readiness score
 
-Recommended production layout:
+### 5. Salary Prediction
 
-- project source in repo
-- external virtual environment
-- empty `uploads/` directory in repo
-- models stored only if required for runtime
+Predicts expected salary in LPA based on role and experience.
 
-## Expanded role coverage
+Techniques used:
 
-This version uses a curated occupation knowledge base with over 117 roles across 25 domains. The predictor matches resumes against structured role profiles instead of synthetic candidate rows.
+- Linear Regression
+- OneHotEncoder
+- Scikit-learn Pipeline
+- Joblib model loading
 
-### Role data grounding
+### 6. ATS Resume Checker
 
-The role taxonomy is curated from public occupational classification concepts and job-family structures inspired by O*NET, BLS SOC groups, and ESCO occupation-skill mappings. It is a curated knowledge base, not a labeled benchmark of real user resumes.
+Evaluates resume quality using an ATS-inspired scoring system.
+
+It checks:
+
+- Resume structure
+- Keyword strength
+- Skill depth
+- Impact statements
+- Education information
+- Experience information
+- Role-specific relevance
+
+---
+
+## Tech Stack
+
+| Category | Technology |
+|---|---|
+| Programming Language | Python |
+| Backend Framework | Flask |
+| Frontend | HTML, CSS, JavaScript |
+| Machine Learning | Scikit-learn |
+| Data Processing | Pandas, NumPy |
+| Resume Parsing | pdfplumber, pypdf, python-docx |
+| Fuzzy Matching | RapidFuzz |
+| Model Storage | Joblib |
+| Testing | Pytest |
+| Version Control | Git and GitHub |
+
+---
+
+## AI / ML Modules Used
+
+| Module | File | Techniques Used |
+|---|---|---|
+| Resume Analysis | `modules/resume_analyzer.py` | Rule-based NLP, regex, fuzzy matching, PDF/DOCX text extraction |
+| Career Recommendation | `modules/career_model.py` | TF-IDF, cosine similarity, weighted scoring |
+| Skill Gap Analysis | `modules/career_skill.py` | Set matching, skill comparison |
+| Salary Prediction | `modules/salary_prediction.py` | Linear Regression, OneHotEncoder, Scikit-learn Pipeline |
+| ATS Scoring | `modules/resume_ats.py` | Rule-based scoring, keyword analysis |
+| Smart Pipeline | `modules/career_pipeline.py` | Integrated multi-module workflow |
+
+---
+
+## Project Structure
+
+```text
+CareerLens/
+│
+├── app.py
+├── README.md
+├── requirements.txt
+├── .gitignore
+│
+├── data/
+│   ├── career_role_profiles.csv
+│   ├── career_skills.csv
+│   ├── jobs.csv
+│   ├── salary_data.csv
+│   ├── skill_catalog.csv
+│   └── skills_data.csv
+│
+├── docs/
+│   └── TOOLS_AND_PIPELINE.md
+│
+├── evaluation/
+│   └── evaluate_salary_model.py
+│
+├── model/
+│   └── salary_model.pkl
+│
+├── modules/
+│   ├── career_model.py
+│   ├── career_pipeline.py
+│   ├── career_skill.py
+│   ├── resume_analyzer.py
+│   ├── resume_ats.py
+│   ├── salary_prediction.py
+│   └── skill_db.py
+│
+├── static/
+│   ├── css/
+│   ├── images/
+│   └── js/
+│
+├── templates/
+│   ├── index.html
+│   ├── landing.html
+│   └── explore.html
+│
+├── tests/
+│   ├── test_career_model.py
+│   ├── test_career_skill.py
+│   └── test_salary_prediction.py
+│
+└── uploads/
+    └── .gitkeep
