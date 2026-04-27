@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
+from werkzeug.exceptions import RequestEntityTooLarge
 import pandas as pd
 import os
+import uuid
 
 INDIA_STATES_AND_UTS = [
     "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana",
@@ -26,7 +28,73 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
 DATA_FOLDER = os.path.join(BASE_DIR, "data")
 
+ALLOWED_EXTENSIONS = {"pdf", "docx"}
+MAX_UPLOAD_SIZE_MB = 5
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_SIZE_MB * 1024 * 1024
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+
+# ==============================
+# FILE UPLOAD SECURITY HELPERS
+# ==============================
+def allowed_file(filename: str) -> bool:
+    """Check whether uploaded file has an allowed extension."""
+    return (
+        "." in filename
+        and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+    )
+
+
+def save_uploaded_resume(file):
+    """
+    Validate and save uploaded resume with a unique secure filename.
+    Returns the saved file path.
+    """
+    if not file or file.filename == "":
+        raise ValueError("Please upload a valid resume file.")
+
+    if not allowed_file(file.filename):
+        raise ValueError("Only PDF and DOCX resume files are allowed.")
+
+    original_filename = secure_filename(file.filename)
+
+    if not original_filename:
+        raise ValueError("Invalid file name.")
+
+    extension = original_filename.rsplit(".", 1)[1].lower()
+    unique_filename = f"{uuid.uuid4().hex}.{extension}"
+    filepath = os.path.join(app.config["UPLOAD_FOLDER"], unique_filename)
+
+    file.save(filepath)
+    return filepath
+
+
+def cleanup_uploaded_file(filepath: str):
+    """Delete uploaded resume after processing."""
+    try:
+        if filepath and os.path.exists(filepath):
+            os.remove(filepath)
+    except Exception as e:
+        print(f"Could not delete uploaded file {filepath}: {e}")
+
+
+@app.errorhandler(RequestEntityTooLarge)
+def handle_large_file(error):
+    message = f"File is too large. Maximum allowed size is {MAX_UPLOAD_SIZE_MB} MB."
+
+    if request.path.startswith("/ats_resume_check"):
+        return jsonify({"error": message}), 413
+
+    return render_template(
+        "index.html",
+        result=None,
+        resume_result=None,
+        error=message,
+        active_section="upload"
+    ), 413
 
 
 def _safe_read_csv(path: str):
@@ -113,22 +181,11 @@ def index():
     if request.method == "POST":
         tool_type = request.form.get("tool_type", "smart_analyzer")
         file = request.files.get("resume")
-
-        if not file or file.filename == "":
-            error = "Please upload a valid resume file."
-            return render_template(
-                "index.html",
-                result=result,
-                resume_result=resume_result,
-                error=error,
-                active_section=active_section
-            )
-
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(UPLOAD_FOLDER, filename)
-        file.save(filepath)
+        filepath = None
 
         try:
+            filepath = save_uploaded_resume(file)
+
             if tool_type == "resume_analyzer":
                 resume_result = analyze_resume(filepath)
                 active_section = "resumeTool"
@@ -171,10 +228,16 @@ def index():
                 result["labels"] = labels
                 result["values"] = values
 
+        except ValueError as e:
+            error = str(e)
+
         except Exception as e:
             print("\n🚨 ERROR OCCURRED:")
             print(str(e))
             error = "Error processing resume. Please upload a proper PDF/DOCX file."
+
+        finally:
+            cleanup_uploaded_file(filepath)
 
     return render_template(
         "index.html",
@@ -242,7 +305,7 @@ def career_model_api():
 # ==============================
 @app.route("/career_skill", methods=["POST"])
 def career_skill_api():
-    data = request.get_json()
+    data = request.get_json() or {}
 
     matched, missing, score = skill_gap_analysis(
         data.get("skills", []),
@@ -261,7 +324,7 @@ def career_skill_api():
 # ==============================
 @app.route("/salary_prediction", methods=["POST"])
 def salary_api():
-    data = request.get_json()
+    data = request.get_json() or {}
 
     role = data.get("role", "").strip()
     domain = data.get("domain", "").strip()
@@ -291,18 +354,14 @@ def salary_api():
 def ats_resume_check():
     file = request.files.get("resume")
     role = request.form.get("role", "").strip()
-
-    if not file or file.filename == "":
-        return jsonify({"error": "Please upload a valid resume file."}), 400
+    filepath = None
 
     if not role:
         return jsonify({"error": "Please enter a target role."}), 400
 
-    filename = secure_filename(file.filename)
-    filepath = os.path.join(UPLOAD_FOLDER, filename)
-    file.save(filepath)
-
     try:
+        filepath = save_uploaded_resume(file)
+
         resume_data = analyze_resume(filepath)
 
         if not resume_data or not resume_data.get("Raw_Text"):
@@ -333,11 +392,17 @@ def ats_resume_check():
             "verdict": verdict
         })
 
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
     except Exception as e:
         print("\n🚨 ATS ERROR:")
         print(str(e))
         return jsonify({"error": "Error checking ATS score."}), 500
 
+    finally:
+        cleanup_uploaded_file(filepath)
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=os.getenv("FLASK_DEBUG", "0") == "1")

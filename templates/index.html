@@ -208,7 +208,6 @@
                             onclick="switchCareer('{{ career.lower() }}')"
                             id="card-{{ career.lower() }}">
                           <span>{{ career.replace('_', ' ').title() }}</span>
-                          <span>{{ score }}%</span>
                         </div>
                         {% endfor %}
                       </div>
@@ -543,7 +542,7 @@
             <div class="interactive-form-grid">
               <div class="field-card">
                 <label for="atsResume" class="field-label">Upload Resume</label>
-                <input type="file" id="atsResume" name="resume" accept=".pdf,.doc,.docx" required>
+                <input type="file" id="atsResume" name="resume" accept=".pdf,.docx" required>
               </div>
 
               <div class="field-card">
