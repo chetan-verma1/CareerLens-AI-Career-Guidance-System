@@ -81,7 +81,7 @@ def run_pipeline(file_path):
     for skill in best_data.get("missing_skills", [])[:6]:
         suggestions.append(f"Add '{skill.title()}' to strengthen alignment with the target role.")
     if confidence < 45:
-        suggestions.append("Include more role-specific tools, projects, and measurable outcomes to improve prediction confidence.")
+           suggestions.append("Include more role-specific tools, projects, and measurable outcomes to improve career match quality.")
     if general_score < 65:
         suggestions.append("Improve section structure, action verbs, and quantified achievements for stronger ATS performance.")
     if best_data.get("role_ats", 0) < 60:
