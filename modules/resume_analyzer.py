@@ -35,6 +35,17 @@ MONTHS = {
 CURRENT_DATE = datetime.now(UTC)
 MAX_REASONABLE_EXPERIENCE = 45.0
 
+# OCR settings for scanned/image-based resume PDFs.
+# If Tesseract or Poppler are installed in custom locations on Windows,
+# set these environment variables before running the app:
+#   set TESSERACT_CMD=C:\Program Files\Tesseract-OCR\tesseract.exe
+#   set POPPLER_PATH=C:\poppler\Library\bin
+OCR_MIN_TEXT_LENGTH = 120
+OCR_DPI = 220
+OCR_MAX_PAGES = 5
+TESSERACT_CMD = os.getenv("TESSERACT_CMD", "").strip()
+POPPLER_PATH = os.getenv("POPPLER_PATH", "").strip() or None
+
 SECTION_KEYWORDS = OrderedDict({
     "summary": ["summary", "profile", "objective", "professional summary", "career objective", "about me"],
     "experience": ["experience", "work experience", "employment", "professional experience", "experience details", "internship", "internships", "work history"],
@@ -130,13 +141,20 @@ def _is_specific_skill(value: str) -> bool:
     return True
 
 OPTIONAL_OCR_AVAILABLE = False
+OCR_IMPORT_ERROR = None
+
 try:
     import pytesseract  # type: ignore
     from pdf2image import convert_from_path  # type: ignore
+
+    if TESSERACT_CMD:
+        pytesseract.pytesseract.tesseract_cmd = TESSERACT_CMD
+
     OPTIONAL_OCR_AVAILABLE = True
-except Exception:
+except Exception as exc:
     pytesseract = None
     convert_from_path = None
+    OCR_IMPORT_ERROR = exc
 
 
 def clean_text(text: str) -> str:
@@ -156,38 +174,95 @@ def normalize_text(text: str) -> str:
     return text.strip()
 
 
+def _extract_text_from_scanned_pdf(file_path: str) -> str:
+    """
+    Extract text from scanned/image-based PDF resumes using OCR.
+    This function is used only as a fallback when normal PDF text extraction
+    returns very little text.
+
+    Requirements:
+    - Python packages: pytesseract, pdf2image, Pillow
+    - System tools: Tesseract OCR and Poppler
+    """
+    if not OPTIONAL_OCR_AVAILABLE or pytesseract is None or convert_from_path is None:
+        print(f"OCR skipped. Optional OCR dependencies are not available: {OCR_IMPORT_ERROR}")
+        return ""
+
+    ocr_chunks: List[str] = []
+
+    try:
+        images = convert_from_path(
+            file_path,
+            dpi=OCR_DPI,
+            first_page=1,
+            last_page=OCR_MAX_PAGES,
+            poppler_path=POPPLER_PATH,
+        )
+
+        for image in images:
+            ocr_text = pytesseract.image_to_string(
+                image,
+                lang="eng",
+                config="--oem 3 --psm 6"
+            )
+
+            if ocr_text and ocr_text.strip():
+                ocr_chunks.append(ocr_text)
+
+    except Exception as exc:
+        print(f"OCR extraction failed for {file_path}: {exc}")
+
+    return clean_text("\n".join(ocr_chunks))
+
+
 def extract_text_from_pdf(file_path: str) -> str:
+    """
+    Extract text from PDF resume.
+
+    Extraction order:
+    1. pdfplumber for text-based PDFs
+    2. pypdf fallback for text-based PDFs
+    3. OCR fallback for scanned/image-based PDFs
+    """
     chunks: List[str] = []
+
     try:
         with pdfplumber.open(file_path) as pdf:
             for page in pdf.pages:
                 page_text = page.extract_text() or ""
                 if page_text.strip():
                     chunks.append(page_text)
-    except Exception:
-        pass
+    except Exception as exc:
+        print(f"pdfplumber extraction failed for {file_path}: {exc}")
 
-    if sum(len(c) for c in chunks) < 120 and PdfReader is not None:
+    extracted_text = clean_text("\n".join(chunks))
+
+    if len(extracted_text) < OCR_MIN_TEXT_LENGTH and PdfReader is not None:
+        pypdf_chunks: List[str] = []
+
         try:
             reader = PdfReader(file_path)
             for page in reader.pages:
                 page_text = page.extract_text() or ""
                 if page_text.strip():
-                    chunks.append(page_text)
-        except Exception:
-            pass
+                    pypdf_chunks.append(page_text)
+        except Exception as exc:
+            print(f"pypdf extraction failed for {file_path}: {exc}")
 
-    if sum(len(c) for c in chunks) < 120 and OPTIONAL_OCR_AVAILABLE:
-        try:
-            images = convert_from_path(file_path)
-            for image in images:
-                ocr_text = pytesseract.image_to_string(image)
-                if ocr_text.strip():
-                    chunks.append(ocr_text)
-        except Exception:
-            pass
+        if pypdf_chunks:
+            extracted_text = clean_text(
+                "\n".join([extracted_text, "\n".join(pypdf_chunks)])
+            )
 
-    return clean_text("\n".join(chunks))
+    if len(extracted_text) < OCR_MIN_TEXT_LENGTH:
+        ocr_text = _extract_text_from_scanned_pdf(file_path)
+
+        if ocr_text:
+            extracted_text = clean_text(
+                "\n".join([extracted_text, ocr_text])
+            )
+
+    return extracted_text
 
 
 def extract_text_from_docx(file_path: str) -> str:
