@@ -163,45 +163,121 @@ def load_dynamic_options():
     jobs_path = os.path.join(DATA_FOLDER, "jobs.csv")
     career_skills_path = os.path.join(DATA_FOLDER, "career_skills.csv")
     salary_path = os.path.join(DATA_FOLDER, "salary_data.csv")
+    career_profiles_path = os.path.join(DATA_FOLDER, "career_role_profiles.csv")
 
     roles = set()
     domains = set()
     states = set()
     skills = set(str(v).strip() for v in skill_database if str(v).strip())
 
-    for path in [jobs_path, career_skills_path, salary_path]:
+    def format_option(value):
+        value = str(value).strip()
+        if not value:
+            return ""
+
+        special_words = {
+            "ai": "AI",
+            "ml": "ML",
+            "ui": "UI",
+            "ux": "UX",
+            "hr": "HR",
+            "qa": "QA",
+            "seo": "SEO",
+            "sql": "SQL",
+            "api": "API",
+            "aws": "AWS",
+            "iot": "IoT",
+            "devops": "DevOps",
+            "nlp": "NLP",
+            "ocr": "OCR",
+            "ats": "ATS",
+            "mca": "MCA",
+            "bca": "BCA",
+            "cse": "CSE",
+            "it": "IT",
+        }
+
+        words = value.replace("_", " ").replace("-", " ").split()
+        formatted_words = []
+
+        for word in words:
+            key = word.lower()
+            formatted_words.append(special_words.get(key, word.capitalize()))
+
+        return " ".join(formatted_words)
+
+    def unique_formatted_options(values):
+        seen = {}
+
+        for value in values:
+            formatted = format_option(value)
+            if not formatted:
+                continue
+
+            key = formatted.lower()
+            if key not in seen:
+                seen[key] = formatted
+
+        return sorted(seen.values())
+
+    for path in [jobs_path, career_skills_path, salary_path, career_profiles_path]:
         df = _safe_read_csv(path)
         if df is None:
             continue
 
-        if "Role" in df.columns:
-            roles.update(
-                str(v).strip() for v in df["Role"].dropna().tolist()
-                if str(v).strip()
-            )
+        for role_col in [
+            "Role",
+            "role",
+            "Career",
+            "career",
+            "Career Role",
+            "career_role",
+            "Job Role",
+            "job_role",
+            "Job Title",
+            "job_title",
+            "Title",
+            "title",
+        ]:
+            if role_col in df.columns:
+                roles.update(
+                    str(v).strip()
+                    for v in df[role_col].dropna().tolist()
+                    if str(v).strip()
+                )
 
-        if "Domain" in df.columns:
-            domains.update(
-                str(v).strip() for v in df["Domain"].dropna().tolist()
-                if str(v).strip()
-            )
+        for domain_col in [
+            "Domain",
+            "domain",
+            "Career Domain",
+            "career_domain",
+            "Job Domain",
+            "job_domain",
+        ]:
+            if domain_col in df.columns:
+                domains.update(
+                    str(v).strip()
+                    for v in df[domain_col].dropna().tolist()
+                    if str(v).strip()
+                )
 
-        if "State" in df.columns:
-            states.update(
-                str(v).strip() for v in df["State"].dropna().tolist()
-                if str(v).strip()
-            )
+        for state_col in ["State", "state", "Location", "location"]:
+            if state_col in df.columns:
+                states.update(
+                    str(v).strip()
+                    for v in df[state_col].dropna().tolist()
+                    if str(v).strip()
+                )
 
     if not states:
         states.update(INDIA_STATES_AND_UTS)
 
     return {
-        "roles": sorted(roles),
-        "domains": sorted(domains),
+        "roles": unique_formatted_options(roles),
+        "domains": unique_formatted_options(domains),
         "states": sorted(states),
         "skills": sorted(skills),
     }
-
 
 # ==============================
 # LANDING PAGE
