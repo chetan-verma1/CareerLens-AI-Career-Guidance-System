@@ -14,7 +14,6 @@ const SKILL_SUGGESTION_POOL = [
 let selectedSkills = [];
 let selectedCareerSignals = [];
 let DYNAMIC_ROLES = [];
-let DYNAMIC_DOMAINS = [];
 let DYNAMIC_STATES = [];
 let DYNAMIC_SKILLS = [...SKILL_SUGGESTION_POOL];
 
@@ -80,14 +79,12 @@ async function initializeDynamicOptions() {
     const data = await res.json();
 
     DYNAMIC_ROLES = Array.isArray(data.roles) ? data.roles : [];
-    DYNAMIC_DOMAINS = Array.isArray(data.domains) ? data.domains : [];
     DYNAMIC_STATES = Array.isArray(data.states) ? data.states : [];
     DYNAMIC_SKILLS = Array.isArray(data.skills) && data.skills.length ? data.skills : [...SKILL_SUGGESTION_POOL];
 
     populateSelect("targetCareer", DYNAMIC_ROLES, "Select target role");
     populateSelect("roleInput", DYNAMIC_ROLES, "Select role");
     populateSelect("atsRole", DYNAMIC_ROLES, "Select target role");
-    populateSelect("salaryDomain", DYNAMIC_DOMAINS, "Select domain");
     populateSelect("stateSelect", DYNAMIC_STATES, "Select state / UT");
   } catch (err) {
     console.error("Failed to load dynamic options:", err);
@@ -759,13 +756,12 @@ function predictSalary() {
   const role = (roleSelect?.value || roleSearchInput?.value || "").trim();
 
   const exp = document.getElementById("expInput").value.trim();
-  const domain = document.getElementById("salaryDomain").value.trim();
   const state = (document.getElementById("stateSelect")?.value || "").trim();
 
   const salaryOutput = document.getElementById("salaryOutput");
 
-  if (!role || !domain || !state) {
-    salaryOutput.innerHTML = "Please fill role, domain, state, and experience.";
+  if (!role || !state) {
+    salaryOutput.innerHTML = "Please fill role, state, and experience.";
     return;
   }
 
@@ -776,7 +772,6 @@ function predictSalary() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       role: role,
-      domain: domain,
       state: state,
       experience: exp
     })
@@ -897,14 +892,12 @@ function resetSkillTool() {
 }
 
 function resetSalaryTool() {
-  const salaryDomain = document.getElementById("salaryDomain");
   const stateSelect = document.getElementById("stateSelect");
   const expInput = document.getElementById("expInput");
   const expValue = document.getElementById("expValue");
   const salaryOutput = document.getElementById("salaryOutput");
 
   resetAutosuggestSelect("roleInput");
-  if (salaryDomain) salaryDomain.value = "";
   if (stateSelect) stateSelect.value = "";
   if (expInput) expInput.value = 3;
   if (expValue) expValue.textContent = "3";

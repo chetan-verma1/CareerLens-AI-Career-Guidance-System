@@ -10,12 +10,6 @@ STATE_MULTIPLIERS = {
     "rajasthan": 0.95, "madhya pradesh": 0.94, "odisha": 0.93, "bihar": 0.91, "assam": 0.92,
 }
 
-DOMAIN_MULTIPLIERS = {
-    "software engineering": 1.10, "data science & analytics": 1.12, "artificial intelligence": 1.18,
-    "cloud & infrastructure": 1.14, "cybersecurity": 1.15, "product & project management": 1.08,
-    "finance & accounting": 1.02, "sales": 1.01, "marketing": 1.00, "education & research": 0.94,
-    "operations & supply chain": 0.97, "healthcare": 1.00,
-}
 
 import joblib
 import pandas as pd
@@ -39,7 +33,7 @@ def _load_model():
     return None
 
 
-def predict_salary(role: str, experience_years: float = 0, domain: str = "", state: str = "") -> Dict[str, object]:
+def predict_salary(role: str, experience_years: float = 0, state: str = "") -> Dict[str, object]:
     model = _load_model()
     try:
         experience_years = float(experience_years or 0)
@@ -60,17 +54,15 @@ def predict_salary(role: str, experience_years: float = 0, domain: str = "", sta
     predicted_salary = float(model.predict(input_df)[0])
 
     state_factor = STATE_MULTIPLIERS.get(str(state or "").strip().lower(), 1.0)
-    domain_factor = DOMAIN_MULTIPLIERS.get(str(domain or "").strip().lower(), 1.0)
-    predicted_salary = round(max(predicted_salary * state_factor * domain_factor, 0.0), 2)
+    predicted_salary = round(max(predicted_salary * state_factor, 0.0), 2)
     return {
         "role": role,
         "experience_years": experience_years,
         "predicted_lpa": predicted_salary,
         "currency": "INR",
-        "domain": domain,
         "state": state,
         "display_text": f"₹{predicted_salary:.2f} LPA",
-        "note": f"Estimated for {role} at {experience_years:g} years of experience" + (f" in {state}" if state else "") + (f" within {domain}" if domain else "") + ".",
+       "note": f"Estimated for {role} at {experience_years:g} years of experience" + (f" in {state}" if state else "") + ".",
     }
 
 

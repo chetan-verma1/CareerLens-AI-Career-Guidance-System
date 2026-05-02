@@ -503,17 +503,11 @@ def salary_api():
     data = request.get_json() or {}
 
     role = str(data.get("role", "")).strip()
-    domain = str(data.get("domain", "")).strip()
     state = str(data.get("state", "")).strip()
 
     if not role:
         return jsonify({
             "error": "Please select or enter a job role."
-        }), 400
-
-    if not domain:
-        return jsonify({
-            "error": "Please select a domain."
         }), 400
 
     if not state:
@@ -535,7 +529,6 @@ def salary_api():
     salary_result = predict_salary(
         role=role,
         experience_years=exp,
-        domain=domain,
         state=state
     )
 
